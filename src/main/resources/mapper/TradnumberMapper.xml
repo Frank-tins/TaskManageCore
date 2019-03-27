@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zt.thread.dao.TradNumberMapper">
+
+    <select id="selectWeightSyncList" resultType="com.zt.thread.vo.FeytOrderWeightVo">
+
+        SELECT
+            TRADNUMBER.EXPRESS_ID AS ORDER_ID
+            ,ORD.ACTUAL_WEIGHT AS WEIGHT
+            ,ACCOUNT.ACCOUNT AS USER_NAME
+            ,ACCOUNT.ACCOUNTTOKEN AS ACCESS_TOKEN
+            ,ACCOUNT.PASSWORD AS PASSWORD
+        FROM
+            R_ORD_TRADNUMBER TRADNUMBER
+            ,R_SAL_ORDER ORD
+            , C_SYS_ORD_EPACKET ACCOUNT
+        WHERE
+            TRADNUMBER.ORDERID = ORD.ORDERID
+            AND TRADNUMBER.EPACKETID = ACCOUNT.ID
+            AND TRADNUMBER.ISUPDATEWEIGHTFLAG = '0'
+            AND TRADNUMBER.DIFFERENCE = '33'
+            AND ORD.ACTUAL_WEIGHT IS NOT NULL AND TRADNUMBER.EXPRESS_ID IS NOT NULL
+            AND TRADNUMBER.OPER_TIME > SYSDATE - 3
+    </select>
+
+    <update id="updateStatus" >
+        UPDATE R_ORD_TRADNUMBER SET ISUPDATEWEIGHTFLAG = 1 WHERE EXPRESS_ID IN (${expressIds})
+    </update>
+    
+
+</mapper>
