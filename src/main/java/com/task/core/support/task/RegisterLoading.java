@@ -35,7 +35,7 @@ public class RegisterLoading  {
 
     public void run() throws Exception {
         //加载许可校验
-        Audit.objectAndArrayIsNotNull("The task pool is not listening for any valid tasks", taskManageConfigBean, TaskManageCoreSupervise.threadAll);
+        Audit.validDataObjects("The task pool is not listening for any valid tasks", taskManageConfigBean, TaskManageCoreSupervise.TASK_ALL);
         //存在2.0 配置则 调用加载流
         if(taskManageConfigBean != null)  sacnnerLoading ();
 //        //销毁

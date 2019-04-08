@@ -118,7 +118,7 @@ public final class RunTaskSupervise {
      * @throws IllegalAccessException
      */
     static RunTaskInfo getRunTaskInfo(String taskId) throws IllegalAccessException{
-        RunTaskInfo runTaskInfo = TaskManageCoreSupervise.threadAll.get(taskId);
+        RunTaskInfo runTaskInfo = TaskManageCoreSupervise.TASK_ALL.get(taskId);
         Audit.isNotNull("The task doesn't exist", runTaskInfo);
         return runTaskInfo;
     }

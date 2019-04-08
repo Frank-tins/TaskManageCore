@@ -3,25 +3,46 @@ package com.task.core.support.logger;
 import com.task.core.support.logger.support.RunLogger;
 import com.task.core.support.task.support.RunTaskInfo;
 import com.task.core.util.Audit;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import javax.management.Query;
+import java.lang.management.ManagementFactory;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.*;
 
 /**
  * 运行信息管理
  * @author Todd
  */
+@Component
 public class ProjectRunLogger {
 
-//    private final RunLogger runLogger = new RunLogger(HttpUtils.getIpAddress(), HttpUtils.getLocalPort());
-    private final RunLogger runLogger = new RunLogger("", "");
+    private final RunLogger runLogger ;
     //所有任务
     private static Map<String, RunTaskInfo> threadAll = null;
 
     public void init(Map<String, RunTaskInfo> threadAll){
         this.threadAll = threadAll;
+    }
+
+    public ProjectRunLogger(){
+        String ip = null;
+        String port = null;
+        try {
+            ip = InetAddress.getLocalHost().getHostAddress();
+            MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();
+            Set<ObjectName> objectNames = beanServer.queryNames(new ObjectName("*:type=Connector,*"),
+                    Query.match(Query.attr("protocol"), Query.value("HTTP/1.1")));
+            port = objectNames.iterator().next().getKeyProperty("port");
+        } catch (Exception e) {
+            ip = "";
+            port = "";
+        }
+        this.runLogger = new RunLogger(ip, port);
     }
 
     /**

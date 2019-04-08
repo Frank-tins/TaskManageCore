@@ -16,34 +16,34 @@ public final class TaskManageCoreSupervise {
 
     private static Logger logger = LogManager.getLogger(TaskManageCoreSupervise.class);
 
-    final static Map<String, RunTaskInfo> threadAll = new HashMap<>();
+    final static Map<String, RunTaskInfo> TASK_ALL = new HashMap<>();
 
     private static final ProjectRunLogger runLogger = new ProjectRunLogger();
 
-    static {runLogger.init(threadAll);}
+    static {runLogger.init(TASK_ALL);}
 
     static String register(String sgtin, String name, String describe, Integer threadNumber, Boolean enable){
         RunTaskInfo runTaskInfo = new RunTaskInfo(sgtin, name, describe, enable, threadNumber);
         logger.info("register : " + sgtin + " Json: " + GsonUtils.toString(runTaskInfo));
-        if(threadAll.get(sgtin) != null) throw new Error("The same task sequence number cannot be registered.");
-        threadAll.put(sgtin, runTaskInfo);
+        if(TASK_ALL.get(sgtin) != null) throw new Error("The same task sequence number cannot be registered.");
+        TASK_ALL.put(sgtin, runTaskInfo);
         return sgtin;
     }
 
     public static Set<RunTaskInfo> getEnableThread(){
         Set<RunTaskInfo> enables = new HashSet<>();
-        threadAll.values().forEach(runThreadInfo -> {
+        TASK_ALL.values().forEach(runThreadInfo -> {
             if(runThreadInfo.isEnable()) enables.add(runThreadInfo);
         });
         return enables;
     }
 
-    public static Set<RunTaskInfo> getAll(){
-        return new HashSet<>(threadAll.values());
-    }
-
-    static RunLogger getRunLogger(){
-        return runLogger.getRunLogger(getEnableThread());
-    }
+//    public static Set<RunTaskInfo> getAll(){
+//        return new HashSet<>(threadAll.values());
+//    }
+//
+//    static RunLogger getRunLogger(){
+//        return runLogger.getRunLogger(getEnableThread());
+//    }
 
 }

@@ -8,11 +8,11 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Frank
  */
-public class StartProblemException extends Exception{
+public class TMCStartProblemException extends Exception{
 
-    private Logger logger = LogManager.getLogger(StartProblemException.class);
+    private Logger logger = LogManager.getLogger(TMCStartProblemException.class);
 
-    public StartProblemException(String message) {
+    public TMCStartProblemException(String message) {
         super(message);
         logger.debug("Load Fail " + message);
     }

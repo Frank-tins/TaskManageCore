@@ -15,6 +15,19 @@ public final class ArrayUtils {
         return false;
     }
 
+    /**
+     * Object 是否为空集合
+     *
+     *      null                    true
+     *      []                      true    (Collection , Map , Array)
+     *      object                  null
+     *      [object]                false
+     *      Map[{k:"", v: ""}]      false
+     *
+     * @param obj
+     * @return
+     * @throws IllegalArgumentException
+     */
     public static Boolean isBank(Object obj) throws IllegalArgumentException{
         if(obj == null) return true;
         if(obj instanceof Map) return ((Map) obj).size() == 0 ;

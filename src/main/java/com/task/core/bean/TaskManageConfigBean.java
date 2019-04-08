@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TaskManageConfigBean {
 
-    private ThreadPoolConfig threadPoolConfig;
+    private ThreadPoolConfig threadPoolConfig = new ThreadPoolConfig();
 
     private List<TaskEntityBean> taskEntityBeanList = new ArrayList<>();
 
@@ -16,22 +16,27 @@ public class TaskManageConfigBean {
     //TODO 未完成线程池配置
 
     public TaskManageConfigBean setThreadNamePrefix(String threadNamePrefix){
+        this.threadPoolConfig.setThreadNamePrefix(threadNamePrefix);
         return this;
     }
 
     public TaskManageConfigBean setMaxPoolSize(Integer maxPoolSize){
+        this.threadPoolConfig.setMaxPool(maxPoolSize);
         return this;
     }
 
     public TaskManageConfigBean setThreadPriority(Integer threadPriorit){
+        this.threadPoolConfig.setPriority(threadPriorit);
         return this;
     }
 
-    public TaskManageConfigBean setCorePoolSize(Integer threadPriorit){
+    public TaskManageConfigBean setCorePoolSize(Integer corePoolSize){
+        this.threadPoolConfig.setCorePoolSize(corePoolSize);
         return this;
     }
 
-    public TaskManageConfigBean setQueueCapacity(Integer threadPriorit){
+    public TaskManageConfigBean setQueueCapacity(Integer queueCapacity){
+        this.threadPoolConfig.setQueueCapacity(queueCapacity);
         return this;
     }
 

@@ -1,8 +1,6 @@
 package com.task.core.start;
 
-import com.google.gson.Gson;
-import com.task.core.bean.TaskManageConfigBean;
-import com.task.core.excption.StartProblemException;
+import com.task.core.excption.TMCStartProblemException;
 import com.task.core.support.task.RegisterLoading;
 import com.task.core.util.Audit;
 import org.apache.logging.log4j.LogManager;
@@ -24,30 +22,33 @@ public class StartLoading implements CommandLineRunner {
     @Autowired
     private DefaultListableBeanFactory defaultListableBeanFactory;
 
-    @Autowired(required = false)
-    private TaskManageConfigBean taskManageConfigBean;
-
+    @Autowired
+    private RegisterLoading registerLoading;
 
     @Override
     public void run(String... args) throws Exception {
 
-        logger.error("taskConfigLading -- Init Task Manage Core FAILED .");
-        registerLoading();
-        destructor();
+
+//        registerLoading();
+        try {
+            destructor();
+        } catch (TMCStartProblemException e) {
+            logger.error("taskConfigLading -- Init Task Manage Core FAILED .");
+            e.printStackTrace();
+        }
 
     }
 
     /**
      * 注册任务组
-     * @throws StartProblemException 任务组注册出现问题时抛出
+     * @throws TMCStartProblemException 任务组注册出现问题时抛出
      */
-    private void registerLoading() throws StartProblemException {
-        RegisterLoading registerLoading = new RegisterLoading(taskManageConfigBean);
+    private void registerLoading() throws TMCStartProblemException {
         try {
             registerLoading.run();
         } catch (Exception e) {
             logger.error(e);
-            throw new StartProblemException(" Register Loading ");
+            throw new TMCStartProblemException(" Register Loading ");
         }
     }
 
@@ -60,9 +61,14 @@ public class StartLoading implements CommandLineRunner {
     /**
      * 销毁
      */
-    private void destructor(){
-        String [] names = defaultListableBeanFactory.getBeanNamesForType(this.getClass());
-        Audit.arrayNotNull("taskConfigLading -- destructor failed  ", names);
+    private void destructor() throws TMCStartProblemException {
+        String [] names = defaultListableBeanFactory.getBeanNamesForType(StartLoading.class);
+        try {
+            Audit.arrayNotNull("taskConfigLading -- destructor failed  ", names);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            throw new TMCStartProblemException("Failed to close initialization object");
+        }
         defaultListableBeanFactory.removeBeanDefinition("taskConfigLading");
         logger.info("taskConfigLading -- Init Task Manage Core SUCCESS");
     }

@@ -1,6 +1,10 @@
 package com.task.core.util;
 
+import com.google.gson.Gson;
+
 /**
+ *
+ * DATAChecked
  *
  * @author Frank
  */
@@ -53,28 +57,36 @@ public class Audit {
      * @throws IllegalArgumentException
      * @throws NullPointerException
      */
-    public static void arrayNotNull(String msg, Object... objs) throws IllegalArgumentException, NullPointerException{
+    public static void arraysNotNull(String msg, Object... objs) throws IllegalArgumentException{
         if(objs == null) throw new NullPointerException();
-        for (int i = 0; i < objs.length; i++) {
-            Boolean rel = ArrayUtils.isBank(objs[i]);
-            if(rel == null) throw new IllegalArgumentException("obj not a Array");
-            if (rel) throw new IllegalArgumentException(msg);
-        }
+        for (int i = 0; i < objs.length; i++)  arrayNotNull(msg, objs[i]);
+    }
+
+    public static void arrayNotNull(String msg, Object objs) throws IllegalArgumentException{
+        Boolean rel = ArrayUtils.isBank(objs);
+        if(rel == null) throw new IllegalArgumentException("obj not a Array");
+        if (rel) throw new IllegalArgumentException(msg);
     }
 
     /**
-     * 对象与集合组 非空
+     * 数据集中存在不为空的数据则 正常 否则抛出异常
      * @param msg
      * @param objs
      * @throws IllegalArgumentException
      * @throws NullPointerException
      */
-    public static void objectAndArrayIsNotNull(String msg, Object... objs) throws IllegalArgumentException, NullPointerException{
+    public static void validDataObjects(String msg, Object... objs) throws IllegalArgumentException, NullPointerException{
         if(objs == null) throw new NullPointerException();
         for (int i = 0; i < objs.length; i++) {
-            Boolean rel = ArrayUtils.isBank(objs[i]);
-            if(rel == null || rel) throw new IllegalArgumentException(msg);
+            //为空跳过
+            if (objs[i] == null) continue;
+            Boolean arrayRel = ArrayUtils.isBank(objs[i]);
+            //为空表示为Object 且非空
+            if(arrayRel == null) return;
+            //不为空表示 为集合类型 如果为false 表示集合存在内容
+            if(!arrayRel) return;
         }
+        throw new IllegalArgumentException(msg);
     }
 
 }
