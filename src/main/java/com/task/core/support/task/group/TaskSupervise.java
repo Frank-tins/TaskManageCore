@@ -1,6 +1,7 @@
 package com.task.core.support.task.group;
 
 import com.task.core.enums.RunStatus;
+import com.task.core.enums.Status;
 import com.task.core.support.task.RunTaskSupervise;
 import com.task.core.util.CollectionUtils;
 import com.task.core.util.DateUtils;
@@ -93,7 +94,7 @@ public class TaskSupervise {
         List<RunStatus> runs = taskInfo.getRunCondition();
         StringBuffer stringBuffer = new StringBuffer();
         runs.forEach(e -> {
-            if(e.equals(RunStatus.Status.MALFUNCTION))
+            if(e.equals(Status.MALFUNCTION))
                 stringBuffer.append(DateUtils.formatDate(new Date(e.getRunTime()), "yyyy-MM-dd hh:mm:ss")
                         + " -- " + e.getMessage() + "\n");
         });

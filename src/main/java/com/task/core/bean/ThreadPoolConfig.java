@@ -1,5 +1,7 @@
 package com.task.core.bean;
 
+import java.util.concurrent.BlockingQueue;
+
 public class ThreadPoolConfig {
 
     private Integer maxPool;
@@ -16,6 +18,15 @@ public class ThreadPoolConfig {
 
     private Integer keepAliveTimeSecond;
 
+    private BlockingQueue blockingQueue;
+
+    public BlockingQueue getBlockingQueue() {
+        return blockingQueue;
+    }
+
+    public void setBlockingQueue(BlockingQueue blockingQueue) {
+        this.blockingQueue = blockingQueue;
+    }
 
     public Integer getMaxPool() {
         return maxPool;

@@ -1,7 +1,7 @@
 package com.task.core.support.task;
 
 
-import com.task.core.support.task.support.RunTaskInfo;
+import com.task.core.bean.RunTaskInfo;
 import com.task.core.util.Audit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

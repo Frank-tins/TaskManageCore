@@ -20,6 +20,10 @@ public class TaskThreadFactory implements ThreadFactory {
 
     private final boolean daemon;
 
+    private static final Object lock = new Object();
+
+    private int threadNumber = 0;
+
     public TaskThreadFactory(String threadName, Integer priority) {
         this.threadName = threadName;
         this.priority = priority;
@@ -33,10 +37,14 @@ public class TaskThreadFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable r) {
-        Thread thread  = new Thread(r);
-        thread.setName(threadName);
-        thread.setPriority(priority);
-        thread.setDaemon(daemon);
-        return thread;
+        //同步创建确保thread name 相互独立
+        synchronized (lock) {
+            threadNumber ++;
+            Thread thread = new Thread(r);
+            thread.setName(threadName + "-" + threadNumber );
+            thread.setPriority(priority);
+            thread.setDaemon(daemon);
+            return thread;
+        }
     }
 }

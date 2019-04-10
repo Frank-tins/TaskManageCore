@@ -1,8 +1,9 @@
-package com.task.core.support.task;
+package com.task.core.start;
 
 import com.task.core.annotation.Task;
 import com.task.core.bean.TaskEntityBean;
 import com.task.core.bean.TaskManageConfigBean;
+import com.task.core.support.task.TaskManageCoreSupervise;
 import com.task.core.util.Audit;
 import com.task.core.util.ClassScaner;
 import com.task.core.util.StringUtils;
@@ -35,14 +36,12 @@ public class RegisterLoading  {
 
     public void run() throws Exception {
         //加载许可校验
-        Audit.validDataObjects("The task pool is not listening for any valid tasks", taskManageConfigBean, TaskManageCoreSupervise.TASK_ALL);
+        Audit.isNotNull("The task pool is not listening for any valid tasks", taskManageConfigBean);
         //存在2.0 配置则 调用加载流
-        if(taskManageConfigBean != null)  sacnnerLoading ();
-//        //销毁
-//        destructor();
+        if(taskManageConfigBean != null)  scannerLoading();
     }
 
-    private void sacnnerLoading (){
+    private void scannerLoading(){
         List<String> packages = taskManageConfigBean.getPackages();
         if( packages.size() > 0 ) {
             String [] temp = new String[]{};

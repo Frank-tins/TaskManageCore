@@ -7,7 +7,7 @@ import com.task.core.annotation.ThreadNumber;
 import com.task.core.support.logger.ProjectRunLogger;
 import com.task.core.support.task.RunTaskSupervise;
 import com.task.core.support.web.StartController;
-import com.task.core.support.task.support.RunTaskInfo;
+import com.task.core.bean.RunTaskInfo;
 import com.task.core.util.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

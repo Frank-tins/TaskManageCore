@@ -89,4 +89,14 @@ public class Audit {
         throw new IllegalArgumentException(msg);
     }
 
+
+    public static <T extends Number> void numberValid(String msg, T min, T max , T... values) throws IllegalArgumentException, NullPointerException{
+        if((min == null && max == null) || (values.length == 0)) throw new NullPointerException();
+        for (int i = 0; i < values.length; i++) {
+            if(values[i] == null) continue;
+            //
+//            if(values[i] > max) throw new IllegalArgumentException(msg);
+        }
+    }
+
 }

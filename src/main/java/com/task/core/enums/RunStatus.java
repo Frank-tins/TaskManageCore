@@ -27,12 +27,6 @@ public class RunStatus {
     /**
      * 运行结果
      */
-    public enum Status{
-        //成功
-        ACCOMPLISH,
-        //失败
-        MALFUNCTION
-    }
 
     public String getMessage() {
         return message;

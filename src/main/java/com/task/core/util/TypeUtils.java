@@ -13,7 +13,10 @@ public class TypeUtils {
     private Logger logger = LogManager.getLogger(TypeUtils.class);
 
     public static boolean isBaseType(Object object) {
-        Class className = object.getClass();
+        return  isBaseClass(object.getClass());
+    }
+
+    public static boolean isBaseClass(Class className) {
         return  className.equals(java.lang.Integer.class) ||
                 className.equals(java.lang.Byte.class) ||
                 className.equals(java.lang.Long.class) ||
@@ -24,7 +27,7 @@ public class TypeUtils {
                 className.equals(java.lang.Boolean.class);
     }
 
-    public static boolean isBaseDefaultValue(Object object) {
+    public static boolean isBaseDefaultValue(Object object) throws RuntimeException{
         Class className = object.getClass();
         String strClassName = "" + className;
         if(className.equals(java.lang.Integer.class)) {

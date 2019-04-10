@@ -1,11 +1,9 @@
 package com.task.core.support.web;
 
-import com.task.core.support.logger.support.RunLogger;
-import com.task.core.support.task.TaskManageCoreSupervise;
+import com.task.core.bean.RunLogger;
 import com.task.core.util.GsonUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;

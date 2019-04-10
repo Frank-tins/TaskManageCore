@@ -1,4 +1,4 @@
-package com.task.core.support.task.support;
+package com.task.core.bean;
 
 import com.task.core.util.StringUtils;
 import org.springframework.beans.BeanUtils;

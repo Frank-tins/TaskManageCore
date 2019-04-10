@@ -1,6 +1,6 @@
-package com.task.core.support.logger.support;
+package com.task.core.bean;
 
-import com.task.core.support.task.support.RunTaskInfo;
+import com.task.core.bean.RunTaskInfo;
 
 import java.util.List;
 

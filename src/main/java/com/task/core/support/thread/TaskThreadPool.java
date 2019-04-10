@@ -3,6 +3,7 @@ package com.task.core.support.thread;
 import com.task.core.bean.ThreadPoolConfig;
 import com.task.core.support.thread.base.TaskRejectedExecutionHandler;
 import com.task.core.support.thread.base.TaskThreadFactory;
+import com.task.core.util.Filling;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,6 +25,8 @@ class TaskThreadPool {
 
     TaskThreadPool(ThreadPoolConfig threadPoolConfig) {
 
+        threadPoolConfig = defaultParameter(threadPoolConfig);
+
         //线程工厂初始化
         String threadNamePrefix = threadPoolConfig.getThreadNamePrefix();
         Integer priority = threadPoolConfig.getPriority();
@@ -32,9 +35,14 @@ class TaskThreadPool {
         //异常任务处理器初始化
         TaskRejectedExecutionHandler taskRejectedExecutionHandler = new TaskRejectedExecutionHandler();
 
-        //队列初始化
-        int queueSize = threadPoolConfig.getQueueCapacity();
-        BlockingQueue<Runnable> queue = new LinkedBlockingQueue(queueSize);
+        //允许外部队列创建
+        BlockingQueue<Runnable> queue = threadPoolConfig.getBlockingQueue();
+        //当用户没有配置线程池队列大小时取无穷大
+        if(queue == null) {
+            //队列初始化
+            int queueSize = threadPoolConfig.getQueueCapacity();
+            queue = queueSize > 0 ? new LinkedBlockingQueue<Runnable>(queueSize) : new LinkedBlockingQueue<Runnable>();
+        }
 
         //线程池初始化
         int corePoolSize = threadPoolConfig.getCorePoolSize();
@@ -46,7 +54,15 @@ class TaskThreadPool {
     }
 
     private ThreadPoolConfig defaultParameter(ThreadPoolConfig threadPoolConfig){
-        return threadPoolConfig;
+
+        ThreadPoolConfig config = new ThreadPoolConfig();
+        config.setQueueCapacity(-1);
+        config.setCorePoolSize(0);
+        config.setPriority(5);
+        config.setMaxPool(Integer.MAX_VALUE);
+        config.setThreadNamePrefix("task-manage-core");
+        config.setKeepAliveTimeSecond(60);
+        return Filling.autoFilling(ThreadPoolConfig.class, threadPoolConfig, config);
     }
 
     public ThreadPoolExecutor getThreadPoolExecutor() {
