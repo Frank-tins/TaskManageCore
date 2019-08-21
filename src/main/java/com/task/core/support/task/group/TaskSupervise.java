@@ -38,7 +38,7 @@ public class TaskSupervise {
     }
 
     static final String registerTask(int taskNumber, String taskId, String runId){
-        String uuid = uuid = UUID.randomUUID().toString().replace("-", "");
+        String uuid = uuid = StringUtils.UUID() + taskId;
         if(TASK_TABLE.get(runId) != null) logger.error("error runId.");
         if(StringUtils.isNotBank(runId)) uuid = runId;
         TaskInfo taskInfo = new TaskInfo(uuid, new ArrayList<>(), taskId, taskNumber);
@@ -93,6 +93,7 @@ public class TaskSupervise {
         TaskInfo taskInfo = TASK_TABLE.get(runID);
         List<RunStatus> runs = taskInfo.getRunCondition();
         StringBuffer stringBuffer = new StringBuffer();
+        LogManager.getLogger().getLevel();
         runs.forEach(e -> {
             if(e.equals(Status.MALFUNCTION))
                 stringBuffer.append(DateUtils.formatDate(new Date(e.getRunTime()), "yyyy-MM-dd hh:mm:ss")

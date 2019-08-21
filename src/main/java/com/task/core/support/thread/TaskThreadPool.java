@@ -7,6 +7,8 @@ import com.task.core.util.Filling;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -14,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 任务线程池监管
- *
+ *  Create Thread pool
  * @author Frank
  */
 class TaskThreadPool {
@@ -43,13 +45,13 @@ class TaskThreadPool {
             int queueSize = threadPoolConfig.getQueueCapacity();
             queue = queueSize > 0 ? new LinkedBlockingQueue<Runnable>(queueSize) : new LinkedBlockingQueue<Runnable>();
         }
-
         //线程池初始化
         int corePoolSize = threadPoolConfig.getCorePoolSize();
         int maxPool = threadPoolConfig.getMaxPool();
         int keepAliveTimeSecond = threadPoolConfig.getKeepAliveTimeSecond();
         threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maxPool, keepAliveTimeSecond, TimeUnit.SECONDS, queue,
                 taskThreadFactory, taskRejectedExecutionHandler);
+
 
     }
 
@@ -68,4 +70,6 @@ class TaskThreadPool {
     public ThreadPoolExecutor getThreadPoolExecutor() {
         return threadPoolExecutor;
     }
+
+
 }

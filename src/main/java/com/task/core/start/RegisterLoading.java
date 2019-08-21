@@ -3,12 +3,15 @@ package com.task.core.start;
 import com.task.core.annotation.Task;
 import com.task.core.bean.TaskEntityBean;
 import com.task.core.bean.TaskManageConfigBean;
+import com.task.core.enums.DataType;
 import com.task.core.support.task.TaskManageCoreSupervise;
 import com.task.core.util.Audit;
 import com.task.core.util.ClassScaner;
 import com.task.core.util.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
@@ -18,6 +21,7 @@ import java.util.UUID;
  * 任务注册器
  * @author Frank
  */
+@Component
 public class RegisterLoading  {
 
     private Logger logger  = LogManager.getLogger(RegisterLoading.class);
@@ -28,11 +32,8 @@ public class RegisterLoading  {
 
     private final int DEFAULT_THREAD_NUMBER = 100;
 
+    @Autowired(required = false)
     private TaskManageConfigBean taskManageConfigBean;
-
-    public RegisterLoading(TaskManageConfigBean taskManageConfigBean) {
-        this.taskManageConfigBean = taskManageConfigBean;
-    }
 
     public void run() throws Exception {
         //加载许可校验
@@ -48,16 +49,20 @@ public class RegisterLoading  {
             Set<Class> types = ClassScaner.scan(packages.toArray(temp), Task.class);
             types.forEach(type -> {
                 Task task = (Task) type.getDeclaredAnnotation(Task.class);
-                register(task.code() , task.value(), task.describe(), task.threadNumber(), task.isEnable());
+                register(task.code() , task.value(), task.describe(), task.threadNumber(), task.isEnable(), task.dataType(), task.dataExp());
             });
         }
         List<TaskEntityBean> taskEntityBeanList = taskManageConfigBean.getTaskEntityBeanList();
         if(taskEntityBeanList.size() > 0){
-            taskEntityBeanList.forEach( taskEntity -> register(taskEntity.getSgtin(), taskEntity.getName(), taskEntity.getDescribe(), taskEntity.getThreadNumber(), taskEntity.getEnable()));
+            taskEntityBeanList.forEach( taskEntity ->
+                    register(taskEntity.getSgtin(), taskEntity.getName(), taskEntity.getDescribe(),
+                            taskEntity.getThreadNumber(), taskEntity.getEnable(), taskEntity.getDataType(),
+                            taskEntity.getDataExp())
+            );
         }
     }
 
-    private void register(String sgtin, String name, String describe, Integer threadNumber, Boolean enable){
+    private void register(String sgtin, String name, String describe, Integer threadNumber, Boolean enable, DataType dataType, String exp){
 
         Audit.thereAreValidValues("Invalid task configuration ", sgtin, name, describe, threadNumber, enable);
 
@@ -66,10 +71,11 @@ public class RegisterLoading  {
         describe = StringUtils.isBank(describe) ? DEFAULT_PARAMETER : describe;
         threadNumber = threadNumber == null || threadNumber < 1 ? DEFAULT_THREAD_NUMBER : threadNumber;
         enable = enable == null ?  DEFAULT_RUN_STATUS : enable;
+        dataType = dataType == null ? DataType.NOT_DATA : dataType;
 
-        Audit.isNotNull("Invalid task configuration ", sgtin, name, describe, threadNumber, enable);
+        Audit.isNotNull("Invalid task configuration ", sgtin, name, describe, threadNumber, enable, dataType);
 
-        TaskManageCoreSupervise.register(sgtin, name, describe, threadNumber, enable);
+        TaskManageCoreSupervise.register(sgtin, name, describe, threadNumber, enable, dataType, exp);
     }
 
 

@@ -13,8 +13,10 @@ import org.springframework.stereotype.Component;
  * 任务加载流
  * @author Frank
  */
-@Component("taskConfigLading")
+@Component(value = StartLoading.START_BEAN_NAME)
 public class StartLoading implements CommandLineRunner {
+
+    public static final String START_BEAN_NAME = "taskConfigLading";
 
     private Logger logger  = LogManager.getLogger(StartLoading.class);
 
@@ -28,11 +30,11 @@ public class StartLoading implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
 
-//        registerLoading();
+        registerLoading();
         try {
             destructor();
         } catch (TMCStartProblemException e) {
-            logger.error("taskConfigLading -- Init Task Manage Core FAILED .");
+            logger.error(START_BEAN_NAME + " -- Init Task Manage Core FAILED .");
             e.printStackTrace();
         }
 
@@ -51,11 +53,7 @@ public class StartLoading implements CommandLineRunner {
         }
     }
 
-    private void dependentLoading(){
-
-
-
-    }
+    private void dependentLoading(){ }
 
     /**
      * 销毁
@@ -68,7 +66,7 @@ public class StartLoading implements CommandLineRunner {
             e.printStackTrace();
             throw new TMCStartProblemException("Failed to close initialization object");
         }
-        defaultListableBeanFactory.removeBeanDefinition("taskConfigLading");
+        defaultListableBeanFactory.removeBeanDefinition(START_BEAN_NAME);
         logger.info("taskConfigLading -- Init Task Manage Core SUCCESS");
     }
 

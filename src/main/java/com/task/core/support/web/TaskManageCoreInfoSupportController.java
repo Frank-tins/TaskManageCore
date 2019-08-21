@@ -4,13 +4,17 @@ import com.task.core.bean.RunLogger;
 import com.task.core.util.GsonUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component
 public final class TaskManageCoreInfoSupportController implements Controller {
 
     private Logger logger = LogManager.getLogger(TaskManageCoreInfoSupportController.class);
@@ -23,6 +27,7 @@ public final class TaskManageCoreInfoSupportController implements Controller {
         logger.info("TaskManageCoreInfoSupportController -- Initialize the information component");
     }
 
+    @ResponseBody
     @PostMapping(value = "/info")
     public RunLogger getInfo() {
         System.out.println(GsonUtils.toString(runLogger));

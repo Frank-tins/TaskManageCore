@@ -5,3 +5,5 @@ server:
   port: 8003
   tomcat:
     uri-encoding: UTF-8
+
+

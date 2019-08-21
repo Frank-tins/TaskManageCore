@@ -55,6 +55,7 @@ public class ClassScaner implements ResourceLoaderAware {
         return this.resourcePatternResolver;
     }
 
+    @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourcePatternResolver = ResourcePatternUtils
                 .getResourcePatternResolver(resourceLoader);

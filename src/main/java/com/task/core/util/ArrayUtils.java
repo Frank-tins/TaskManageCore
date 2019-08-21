@@ -2,7 +2,7 @@ package com.task.core.util;
 
 import java.util.*;
 
-public final class ArrayUtils {
+public final class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
 
     public static boolean contain(Object[] objs, Object obj){
         Boolean isString = false;

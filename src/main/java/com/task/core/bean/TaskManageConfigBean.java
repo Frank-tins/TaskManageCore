@@ -1,5 +1,6 @@
 package com.task.core.bean;
 
+import com.task.core.enums.DataType;
 import com.task.core.util.StringUtils;
 
 import java.util.ArrayList;
@@ -47,11 +48,18 @@ public class TaskManageConfigBean {
         return this;
     }
 
-    public TaskManageConfigBean addTask(String sgtin, String name, String describe, Integer threadNumber, Boolean enable){
-        TaskEntityBean taskEntityBean = new TaskEntityBean(sgtin, name, describe, threadNumber, enable);
+    public TaskManageConfigBean addTask(String sgtin, String name, String describe, Integer threadNumber, Boolean enable,
+                                        DataType dataType, String dataExp){
+        TaskEntityBean taskEntityBean = new TaskEntityBean(sgtin, name, describe, threadNumber, enable, dataType, dataExp);
         taskEntityBeanList.add(taskEntityBean);
         return this;
     }
+
+    public TaskManageConfigBean addTask(String sgtin, String name, String describe, Integer threadNumber, Boolean enable){
+        addTask(sgtin, name, describe, threadNumber, enable, DataType.NOT_DATA, null);
+        return this;
+    }
+
 
     public TaskManageConfigBean addTask(String sgtin, String name, String describe){
         addTask(sgtin, name, describe, null, null);

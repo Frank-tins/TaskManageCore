@@ -1,5 +1,7 @@
 package com.task.core.util;
 
+import java.util.UUID;
+
 public class StringUtils extends org.springframework.util.StringUtils {
 
     public static String toString(Object obj){
@@ -13,5 +15,10 @@ public class StringUtils extends org.springframework.util.StringUtils {
     public static boolean isNotBank(Object obj){
         return !isBank(obj);
     }
+
+    public static String UUID(){
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
 
 }

@@ -29,6 +29,7 @@ public class TaskThreadFactory implements ThreadFactory {
         this.priority = priority;
         this.daemon = true;
     }
+
     public TaskThreadFactory(String threadName, Integer priority,boolean daemon) {
         this.threadName = threadName;
         this.priority = priority;

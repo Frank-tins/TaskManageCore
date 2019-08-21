@@ -1,5 +1,7 @@
 package com.task.core.bean;
 
+import com.task.core.enums.DataType;
+
 public class TaskEntityBean {
 
     private String sgtin;
@@ -7,8 +9,11 @@ public class TaskEntityBean {
     private String describe;
     private Integer threadNumber;
     private Boolean enable;
+    private DataType dataType;
+    private String dataExp;
 
-    public TaskEntityBean(String sgtin, String name, String describe, Integer threadNumber, Boolean enable) {
+    public TaskEntityBean(String sgtin, String name, String describe, Integer threadNumber,
+                          Boolean enable, DataType dataType, String dataExp) {
         this.sgtin = sgtin;
         this.name = name;
         this.describe = describe;
@@ -54,5 +59,21 @@ public class TaskEntityBean {
 
     public void setEnable(Boolean enable) {
         this.enable = enable;
+    }
+
+    public DataType getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(DataType dataType) {
+        this.dataType = dataType;
+    }
+
+    public String getDataExp() {
+        return dataExp;
+    }
+
+    public void setDataExp(String dataExp) {
+        this.dataExp = dataExp;
     }
 }

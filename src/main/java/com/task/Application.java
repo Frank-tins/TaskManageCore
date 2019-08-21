@@ -16,7 +16,8 @@ public class Application {
     private Logger logger = LogManager.getLogger(Application.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class,args);
+//        SpringApplication.run(Application.class,args);
+        System.out.println(LogManager.getLogger().getLevel());
     }
 
 }

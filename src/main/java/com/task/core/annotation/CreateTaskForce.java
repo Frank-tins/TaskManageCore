@@ -12,11 +12,22 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CreateTaskForce {
+//    /**
+//     * 是否移交监管器
+//     * @return
+//     */
+//    boolean value() default true;
+
     /**
-     * 是否移交监管器
+     * 是否为单例
      * @return
      */
-    boolean value() default true;
-
     boolean single() default false;
+
+    /**
+     * 任务码
+     * @return
+     */
+    String code() default "";
+
 }

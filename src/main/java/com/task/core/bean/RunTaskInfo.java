@@ -1,5 +1,6 @@
 package com.task.core.bean;
 
+import com.task.core.enums.DataType;
 import com.task.core.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 
@@ -7,6 +8,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 任务注册信息
+ */
 public class RunTaskInfo {
 
     private String sgtin;
@@ -21,11 +25,15 @@ public class RunTaskInfo {
 
     private boolean runTime;
 
+    private DataType dataType;
+
+    private String exp;
+
     private List<TaskRunLogger> runLogger;
 
     public RunTaskInfo() {};
 
-    public RunTaskInfo(String sgtin, String name, String describe, boolean enable, int threadNumber) {
+    public RunTaskInfo(String sgtin, String name, String describe, boolean enable, int threadNumber, DataType dataType, String exp) {
         this.sgtin = sgtin;
         this.name = name;
         this.describe = describe;
@@ -93,6 +101,22 @@ public class RunTaskInfo {
 
     public void removeLogger(){
         this.runLogger = null;
+    }
+
+    public DataType getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(DataType dataType) {
+        this.dataType = dataType;
+    }
+
+    public String getExp() {
+        return exp;
+    }
+
+    public void setExp(String exp) {
+        this.exp = exp;
     }
 
     @Override
