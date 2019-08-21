@@ -1,6 +1,7 @@
 package com.task.core.bean;
 
 import com.task.core.enums.DataType;
+import com.task.core.enums.LogLevel;
 import com.task.core.util.StringUtils;
 
 import java.util.ArrayList;
@@ -49,14 +50,14 @@ public class TaskManageConfigBean {
     }
 
     public TaskManageConfigBean addTask(String sgtin, String name, String describe, Integer threadNumber, Boolean enable,
-                                        DataType dataType, String dataExp){
-        TaskEntityBean taskEntityBean = new TaskEntityBean(sgtin, name, describe, threadNumber, enable, dataType, dataExp);
+                                        DataType dataType, String dataExp, LogLevel level){
+        TaskEntityBean taskEntityBean = new TaskEntityBean(sgtin, name, describe, threadNumber, enable, dataType, dataExp, level);
         taskEntityBeanList.add(taskEntityBean);
         return this;
     }
 
     public TaskManageConfigBean addTask(String sgtin, String name, String describe, Integer threadNumber, Boolean enable){
-        addTask(sgtin, name, describe, threadNumber, enable, DataType.NOT_DATA, null);
+        addTask(sgtin, name, describe, threadNumber, enable, DataType.NOT_DATA, null, null);
         return this;
     }
 

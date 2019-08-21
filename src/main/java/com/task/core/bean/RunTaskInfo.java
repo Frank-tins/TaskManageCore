@@ -1,6 +1,7 @@
 package com.task.core.bean;
 
 import com.task.core.enums.DataType;
+import com.task.core.enums.LogLevel;
 import com.task.core.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 
@@ -31,9 +32,11 @@ public class RunTaskInfo {
 
     private List<TaskRunLogger> runLogger;
 
+    private LogLevel level;
+
     public RunTaskInfo() {};
 
-    public RunTaskInfo(String sgtin, String name, String describe, boolean enable, int threadNumber, DataType dataType, String exp) {
+    public RunTaskInfo(String sgtin, String name, String describe, boolean enable, int threadNumber, DataType dataType, String exp, LogLevel level) {
         this.sgtin = sgtin;
         this.name = name;
         this.describe = describe;
@@ -41,6 +44,17 @@ public class RunTaskInfo {
         this.threadNumber = threadNumber;
         this.runTime = false;
         this.runLogger = new ArrayList<>();
+        this.dataType = dataType;
+        this.exp = exp;
+        this.level = level;
+    }
+
+    public LogLevel getLevel() {
+        return level;
+    }
+
+    public void setLevel(LogLevel level) {
+        this.level = level;
     }
 
     public void setRunTime(boolean runTime) {

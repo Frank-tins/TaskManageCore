@@ -3,6 +3,8 @@ package com.task.core.support.task.group;
 
 import com.task.core.annotation.CreateTaskForce;
 import com.task.core.annotation.Task;
+import com.task.core.excption.DataExpException;
+import com.task.core.excption.DataParameterException;
 import com.task.core.support.data.DataSupportCore;
 import com.task.core.support.logger.ProjectRunLogger;
 import com.task.core.support.task.RunTaskSupervise;
@@ -38,22 +40,20 @@ public class TaskSuperviseAnalytical {
 
     private Logger logger = LogManager.getLogger(TaskSuperviseAnalytical.class);
 
-    public static final String PARAMETER_RUN_ID = "RUN_ID";
-
-    public static final String PARAMETER_PROCEEDING_JOIN_POINT = "PROCEEDING_JOIN_POINT";
-
-    public static final String PARAMETER_DATA = "PARAMETER_DATA";
-
     private ThreadSportCore threadSportCore;
 
     private DataSupportCore dataSupportCore = new DataSupportCore();
 
-    private TaskRunnableLocal taskRunnableLocal = TaskRunnableLocal.getTaskRunnableLocal();
+    private static TaskRunnableLocal taskRunnableLocal = TaskRunnableLocal.getTaskRunnableLocal();
 
     public TaskSuperviseAnalytical(@Autowired ThreadSportCore threadSportCore) {
         this.threadSportCore = threadSportCore;
         this.threadSportCore.setTaskRunnableLocal(taskRunnableLocal);
         logger.info("Task supervise analytical [start].");
+    }
+
+    static TaskRunnableLocal getTaskRunnableLocal(){
+        return taskRunnableLocal;
     }
 
     @Pointcut("(@annotation(com.task.core.annotation.CreateTaskForce))")
@@ -71,8 +71,6 @@ public class TaskSuperviseAnalytical {
 //        StartController startController = (StartController)obj;
 //        String taskId = startController.getThreadId();
 
-        LocalVariableTableParameterNameDiscoverer localVariableTableParameterNameDiscoverer =
-                new LocalVariableTableParameterNameDiscoverer();
         Object[] parameters = joinPoint.getArgs();
 
         String code ="";
@@ -92,35 +90,45 @@ public class TaskSuperviseAnalytical {
             RunTaskSupervise.runTheLock(code);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
+            throw e;
         }
 
-        RunTaskInfo runTaskInfo = ProjectRunLogger.getRunThread(code);
+        String runId = null;//StringUtils.UUID() + runTaskInfo.getSgtin();
+        try {
+            RunTaskInfo runTaskInfo = ProjectRunLogger.getRunThread(code);
 
-        String runId = TaskSupervise.registerTask(runTaskInfo.getThreadNumber(), runTaskInfo.getSgtin());//StringUtils.UUID() + runTaskInfo.getSgtin();
+            runId = TaskSupervise.registerTask(runTaskInfo.getThreadNumber(), runTaskInfo.getSgtin());
 
-        List data = dataSupportCore.getData(runTaskInfo.getDataType(), runTaskInfo.getExp(), method, parameters);
+            List data = dataSupportCore.getData(runTaskInfo.getDataType(), runTaskInfo.getExp(), method, parameters);
 
-        List<RunnableExtend> list = new ArrayList<>();
-        TaskRunnableLocal.LocalRunnableBinding localRunnableBinding = taskRunnableLocal.getLocalRunnableBinding(runTaskInfo);
-        //TODO 安全执行时间
+            List<RunnableExtend> list = new ArrayList<>();
+            TaskRunnableLocal.LocalRunnableBinding localRunnableBinding = taskRunnableLocal.getLocalRunnableBinding(runTaskInfo);
+            //TODO 安全执行时间
 //        if(){
-        boolean parameterIsExist = data != null && data.size() > 0;
-        Map<String, Object> cache = new HashMap<>();
-        cache.put(PARAMETER_PROCEEDING_JOIN_POINT, joinPoint);
-        cache.put(PARAMETER_RUN_ID, runId);
-        List dataArray = TaskSupervise.allocationTask(data, runTaskInfo.getThreadNumber());
-        for (int i = 0; i < runTaskInfo.getThreadNumber(); i++) {
+            boolean parameterIsExist = data != null && data.size() > 0;
+            Map<String, Object> cache = new HashMap<>();
+            cache.put(RunnableExtend.PARAMETER_PROCEEDING_JOIN_POINT, joinPoint);
+            cache.put(RunnableExtend.PARAMETER_RUN_ID, runId);
+            List dataArray = null;
             if(parameterIsExist) {
-                int index = dataSupportCore.getDataParameterIndex(method);
-                if(index <0 ) throw new RuntimeException("find parameter index error.");
-                parameters[index] = dataArray.get(i);
-                cache.put(PARAMETER_DATA, parameters);
+                dataArray = TaskSupervise.allocationTask(data, runTaskInfo.getThreadNumber());
             }
-            localRunnableBinding.bind(new RunnableExtendWork(), cache);
+            for (int i = 0; i < runTaskInfo.getThreadNumber(); i++) {
+                if(parameterIsExist) {
+                    int index = dataSupportCore.getDataParameterIndex(method);
+                    if(index <0 ) throw new RuntimeException("find parameter index error.");
+                    parameters[index] = dataArray.get(i);
+                    cache.put(RunnableExtend.PARAMETER_DATA, parameters);
+                }
+                localRunnableBinding.bind(new RunnableExtendWork(), cache);
+            }
+            localRunnableBinding.bindData();
+            list = localRunnableBinding.bindData();
+            threadSportCore.startTask(list);
+        } catch (Exception e){
+            RunTaskSupervise.releaseTheLock(code);
+            throw e;
         }
-        localRunnableBinding.bindData();
-        list = localRunnableBinding.bindData();
-        threadSportCore.startTask(list);
         if(method.getReturnType() == String.class) return runId;
 
         return null;

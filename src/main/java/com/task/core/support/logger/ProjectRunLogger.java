@@ -16,7 +16,7 @@ import java.util.*;
  * 运行信息管理
  * @author Todd
  */
-@Component
+//@Component
 public class ProjectRunLogger {
 
     private final RunLogger runLogger ;

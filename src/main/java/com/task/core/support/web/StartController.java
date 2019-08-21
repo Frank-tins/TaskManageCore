@@ -1,8 +1,12 @@
 package com.task.core.support.web;
 
 //import com.zt.thread.ThreadResponse;
+import com.task.core.support.logger.ProjectRunLogger;
+import com.task.core.util.GsonUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 
 public abstract class StartController {
@@ -62,11 +66,11 @@ public abstract class StartController {
 //        return ThreadResponse.SUCCESS("SUCCESS", ProjectRunLogger.getRunThread(threadId));
 //    }
 //
-//    @RequestMapping(value = "/logger", method = {RequestMethod.GET, RequestMethod.POST})
-//    public final ThreadResponse logger() throws IllegalAccessException{
+    @RequestMapping(value = "/logger", method = {RequestMethod.GET, RequestMethod.POST})
+    public final Object logger() throws IllegalAccessException{
 //        logger.info("ip:" + HttpUtils.getRequest().getLocalAddr() + "get Logger uri: " + HttpUtils.getUrl() + "");
-//        return ThreadResponse.SUCCESS("SUCCESS", ProjectRunLogger.getRunThreadLogger(threadId));
-//    }
+        return GsonUtils.toString(ProjectRunLogger.getRunThreadLogger("myTest"));
+    }
 //
 //    @RequestMapping(value = "/power", method = {RequestMethod.GET, RequestMethod.POST})
 //    public ThreadResponse power(Integer threadNumber) throws IllegalAccessException{

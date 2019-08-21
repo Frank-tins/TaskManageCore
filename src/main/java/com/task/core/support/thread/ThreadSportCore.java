@@ -15,12 +15,16 @@ import java.util.List;
 /**
  * @author Frank
  */
-@Component
+//@Component
 public class ThreadSportCore {
 
     private Logger logger = LogManager.getLogger(ThreadSportCore.class);
 
-    @Autowired
+    public ThreadSportCore(ThreadPoolConfig threadPoolConfig) {
+        this.threadPoolConfig = threadPoolConfig;
+    }
+
+    //    @Autowired
     private ThreadPoolConfig threadPoolConfig;
 
     private static TaskRunnableLocal taskRunnableLocal;
@@ -30,8 +34,9 @@ public class ThreadSportCore {
     }
 
 
-    public void init(){
+    public ThreadSportCore init(){
         ThreadHandler.init(threadPoolConfig);
+        return this;
     }
 
     public void startTask(List<RunnableExtend> list){

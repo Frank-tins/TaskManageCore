@@ -1,16 +1,15 @@
 package com.task.core.annotation;
 
 import com.task.core.enums.DataType;
+import com.task.core.enums.LogLevel;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * 声明任务模型
  * @author Frank
  */
+@Documented
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Task {
@@ -57,5 +56,11 @@ public @interface Task {
      * @return
      */
     String dataExp() default "";
+
+    /**
+     * 安全级别
+     * @return
+     */
+    LogLevel level() default LogLevel.ERROR_INFO;
 
 }

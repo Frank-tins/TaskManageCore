@@ -1,6 +1,7 @@
 package com.task.core.support.task;
 
 import com.task.core.enums.DataType;
+import com.task.core.enums.LogLevel;
 import com.task.core.support.logger.ProjectRunLogger;
 import com.task.core.bean.RunTaskInfo;
 import com.task.core.util.GsonUtils;
@@ -22,8 +23,8 @@ public final class TaskManageCoreSupervise {
 
     static {runLogger.init(TASK_ALL);}
 
-    public static String register(String sgtin, String name, String describe, Integer threadNumber, Boolean enable, DataType dataType, String exp){
-        RunTaskInfo runTaskInfo = new RunTaskInfo(sgtin, name, describe, enable, threadNumber, dataType, exp);
+    public static String register(String sgtin, String name, String describe, Integer threadNumber, Boolean enable, DataType dataType, String exp, LogLevel level){
+        RunTaskInfo runTaskInfo = new RunTaskInfo(sgtin, name, describe, enable, threadNumber, dataType, exp, level);
         logger.info("register : " + sgtin + " Json: " + GsonUtils.toString(runTaskInfo));
         if(TASK_ALL.get(sgtin) != null) throw new Error("The same task sequence number cannot be registered.");
         TASK_ALL.put(sgtin, runTaskInfo);

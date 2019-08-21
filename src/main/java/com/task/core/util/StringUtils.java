@@ -20,5 +20,12 @@ public class StringUtils extends org.springframework.util.StringUtils {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
+    public static String format (String str, String... args){
+        String rel = str;
+        for (int i = 0; i < args.length; i++) {
+            rel.replace("%" + i , args[i]);
+        }
+        return rel;
+    }
 
 }

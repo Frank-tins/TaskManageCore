@@ -16,7 +16,7 @@ import java.util.*;
  *
  * @author Frank
  */
-@Component
+//@Component
 public class RelyLoading {
 
     private Logger logger = LogManager.getLogger(RelyLoading.class);

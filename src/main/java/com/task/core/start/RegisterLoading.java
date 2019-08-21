@@ -4,6 +4,7 @@ import com.task.core.annotation.Task;
 import com.task.core.bean.TaskEntityBean;
 import com.task.core.bean.TaskManageConfigBean;
 import com.task.core.enums.DataType;
+import com.task.core.enums.LogLevel;
 import com.task.core.support.task.TaskManageCoreSupervise;
 import com.task.core.util.Audit;
 import com.task.core.util.ClassScaner;
@@ -21,7 +22,7 @@ import java.util.UUID;
  * 任务注册器
  * @author Frank
  */
-@Component
+//@Component
 public class RegisterLoading  {
 
     private Logger logger  = LogManager.getLogger(RegisterLoading.class);
@@ -32,7 +33,10 @@ public class RegisterLoading  {
 
     private final int DEFAULT_THREAD_NUMBER = 100;
 
-    @Autowired(required = false)
+    public RegisterLoading(TaskManageConfigBean taskManageConfigBean) {
+        this.taskManageConfigBean = taskManageConfigBean;
+    }
+
     private TaskManageConfigBean taskManageConfigBean;
 
     public void run() throws Exception {
@@ -49,7 +53,7 @@ public class RegisterLoading  {
             Set<Class> types = ClassScaner.scan(packages.toArray(temp), Task.class);
             types.forEach(type -> {
                 Task task = (Task) type.getDeclaredAnnotation(Task.class);
-                register(task.code() , task.value(), task.describe(), task.threadNumber(), task.isEnable(), task.dataType(), task.dataExp());
+                register(task.code() , task.value(), task.describe(), task.threadNumber(), task.isEnable(), task.dataType(), task.dataExp(), task.level());
             });
         }
         List<TaskEntityBean> taskEntityBeanList = taskManageConfigBean.getTaskEntityBeanList();
@@ -57,12 +61,12 @@ public class RegisterLoading  {
             taskEntityBeanList.forEach( taskEntity ->
                     register(taskEntity.getSgtin(), taskEntity.getName(), taskEntity.getDescribe(),
                             taskEntity.getThreadNumber(), taskEntity.getEnable(), taskEntity.getDataType(),
-                            taskEntity.getDataExp())
+                            taskEntity.getDataExp(), taskEntity.getLevel())
             );
         }
     }
 
-    private void register(String sgtin, String name, String describe, Integer threadNumber, Boolean enable, DataType dataType, String exp){
+    private void register(String sgtin, String name, String describe, Integer threadNumber, Boolean enable, DataType dataType, String exp, LogLevel level){
 
         Audit.thereAreValidValues("Invalid task configuration ", sgtin, name, describe, threadNumber, enable);
 
@@ -72,10 +76,11 @@ public class RegisterLoading  {
         threadNumber = threadNumber == null || threadNumber < 1 ? DEFAULT_THREAD_NUMBER : threadNumber;
         enable = enable == null ?  DEFAULT_RUN_STATUS : enable;
         dataType = dataType == null ? DataType.NOT_DATA : dataType;
+        level = level == null ? LogLevel.ERROR_INFO : level;
 
         Audit.isNotNull("Invalid task configuration ", sgtin, name, describe, threadNumber, enable, dataType);
 
-        TaskManageCoreSupervise.register(sgtin, name, describe, threadNumber, enable, dataType, exp);
+        TaskManageCoreSupervise.register(sgtin, name, describe, threadNumber, enable, dataType, exp, level);
     }
 
 

@@ -1,10 +1,8 @@
 package com.task.core.util;
 
-import com.task.core.bean.ThreadPoolConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 
 /**

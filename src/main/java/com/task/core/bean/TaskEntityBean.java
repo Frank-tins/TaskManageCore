@@ -1,6 +1,7 @@
 package com.task.core.bean;
 
 import com.task.core.enums.DataType;
+import com.task.core.enums.LogLevel;
 
 public class TaskEntityBean {
 
@@ -11,14 +12,26 @@ public class TaskEntityBean {
     private Boolean enable;
     private DataType dataType;
     private String dataExp;
+    private LogLevel level;
 
     public TaskEntityBean(String sgtin, String name, String describe, Integer threadNumber,
-                          Boolean enable, DataType dataType, String dataExp) {
+                          Boolean enable, DataType dataType, String dataExp, LogLevel level) {
         this.sgtin = sgtin;
         this.name = name;
         this.describe = describe;
         this.threadNumber = threadNumber;
         this.enable = enable;
+        this.dataExp = dataExp;
+        this.dataType = dataType;
+        this.level = level;
+    }
+
+    public LogLevel getLevel() {
+        return level;
+    }
+
+    public void setLevel(LogLevel level) {
+        this.level = level;
     }
 
     public String getSgtin() {

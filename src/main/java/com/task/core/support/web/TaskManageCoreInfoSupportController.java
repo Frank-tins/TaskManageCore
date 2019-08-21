@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.Controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Component
+//@Component
 public final class TaskManageCoreInfoSupportController implements Controller {
 
     private Logger logger = LogManager.getLogger(TaskManageCoreInfoSupportController.class);

@@ -1,7 +1,7 @@
 package com.task.core.support.thread.base;
 
+import com.task.core.enums.RunStatus;
 import com.task.core.support.task.group.TaskSupervise;
-import com.task.core.support.task.group.TaskSuperviseAnalytical;
 import com.task.core.support.thread.data.RunnableCache;
 import com.task.core.support.thread.data.TaskRunnableLocal;
 import com.task.core.util.Audit;
@@ -17,15 +17,15 @@ import java.util.Map;
  *
  * @author Frank
  */
-public class RunnableExtendWork implements RunnableExtend {
-
-    private Logger logger = LogManager.getLogger(RunnableExtendWork.class);
-
-    private TaskRunnableLocal taskRunnableLocal = TaskRunnableLocal.getTaskRunnableLocal();
+public class RunnableExtendWork extends AbstractRunnableExtend implements RunnableExtend<RunStatus> {
 
     @Override
     public void clean() {
-
+        TaskRunnableLocal taskRunnableLocal = super.getTaskRunnableLocal();
+        taskRunnableLocal.cleanRunnableCache(this);
+        RunnableCache runnableCache = super.getRunnableCache();
+        String runId = (String) runnableCache.getCache(RunnableExtend.PARAMETER_RUN_ID);
+        TaskSupervise.conclude(runId, this);
     }
 
     @Override
@@ -35,40 +35,30 @@ public class RunnableExtendWork implements RunnableExtend {
 
     @Override
     public void prepare() {
-        RunnableCache runnableCache = taskRunnableLocal.cache(this);
-        ProceedingJoinPoint proceedingJoinPoint = (ProceedingJoinPoint) runnableCache.getCache(TaskSuperviseAnalytical.PARAMETER_PROCEEDING_JOIN_POINT);
-        String runId = (String) runnableCache.getCache(TaskSuperviseAnalytical.PARAMETER_RUN_ID);
+        super.prepare();
+        RunnableCache runnableCache = super.getRunnableCache();
+        ProceedingJoinPoint proceedingJoinPoint = (ProceedingJoinPoint) runnableCache.getCache(RunnableExtend.PARAMETER_PROCEEDING_JOIN_POINT);
+        String runId = (String) runnableCache.getCache(RunnableExtend.PARAMETER_RUN_ID);
         //TODO 参数不支持启动
         Audit.isNotNull("runnable parameter ", proceedingJoinPoint, runId);
     }
 
     @Override
-    public void execute() {
-        RunnableCache runnableCache = taskRunnableLocal.cache(this);
-        String runId = (String) runnableCache.getCache(TaskSuperviseAnalytical.PARAMETER_RUN_ID);
-        ProceedingJoinPoint proceedingJoinPoint = (ProceedingJoinPoint) runnableCache.getCache(TaskSuperviseAnalytical.PARAMETER_PROCEEDING_JOIN_POINT);
-        Object[] parameters = (Object[]) runnableCache.getCache(TaskSuperviseAnalytical.PARAMETER_DATA);
-        try {
-            if(parameters != null) {
-                proceedingJoinPoint.proceed(parameters);
-            }else {
-                proceedingJoinPoint.proceed();
-            }
-            TaskSupervise.conclude(runId);
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-            TaskSupervise.conclude(runId, throwable.getMessage());
+    public Object execute() throws Throwable {
+        RunnableCache runnableCache = super.getRunnableCache();
+        ProceedingJoinPoint proceedingJoinPoint = (ProceedingJoinPoint) runnableCache.getCache(RunnableExtend.PARAMETER_PROCEEDING_JOIN_POINT);
+        Object[] parameters = (Object[]) runnableCache.getCache(RunnableExtend.PARAMETER_DATA);
+        Object rel = null;
+        if(parameters != null) {
+            rel = proceedingJoinPoint.proceed(parameters);
+        }else {
+            rel = proceedingJoinPoint.proceed();
         }
-
+        return rel;
     }
 
     @Override
-    public void putRunResultsTheCache(Map allCache) {
-
-    }
-
-    @Override
-    public void getRunResultsTheCache() {
+    public void error(Throwable throwable) {
 
     }
 }
