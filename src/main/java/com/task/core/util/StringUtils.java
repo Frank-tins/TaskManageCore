@@ -8,24 +8,35 @@ public class StringUtils extends org.springframework.util.StringUtils {
         return isEmpty(obj) ? "" : obj.toString();
     }
 
-    public static boolean isBank(Object obj){
+    public static boolean isBlank(Object obj){
         return isEmpty(obj) || "".equals(obj.toString().trim());
     }
 
-    public static boolean isNotBank(Object obj){
-        return !isBank(obj);
+    public static boolean isNotBlank(Object obj){
+        return !isBlank(obj);
     }
 
     public static String UUID(){
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
-    public static String format (String str, String... args){
+    public static String format (String str, Object... args){
         String rel = str;
         for (int i = 0; i < args.length; i++) {
-            rel.replace("%" + i , args[i]);
+            rel.replace("%" + i , toString(args[i]));
         }
         return rel;
     }
 
+    public static boolean equalsString(String obj1, String obj2) {
+
+        if(isEmpty(obj1) && isEmpty(obj2)) {
+            return true;
+        }
+        if(isEmpty(obj1)) {
+            return false;
+        }
+
+        return obj1.equals(obj2);
+    }
 }

@@ -26,9 +26,11 @@ public class DataSupportCore {
 
     private ParameterManageCore parameterManageCore = new ParameterManageCore();
 
+    public DataSupportCore(){ logger.debug("TMC [Data Support Core] [START]");}
+
     public List<Object> getData(DataType dataType, String exp, Method method, Object[] parameter) throws DataExpException, DataParameterException {
 
-        if(dataType ==DataType.NOT_DATA) return null;
+        if(dataType ==DataType.NOT_DATA){ return null;}
 
         List<Object> rel = null;
         try {

@@ -40,6 +40,7 @@ public class TaskRunnableLocal {
     private TaskRunnableLocal() {
         runnableCacheMap = new HashMap<>();
         taskGroupCache = new HashMap<>();
+        logger.debug("TMC [Thread Cache Pool] [START] ");
     }
 
     final String notTaskError = "Error An error occurred while allocating a task cache. The task does not exist";

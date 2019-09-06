@@ -1,99 +1,110 @@
 package com.task.core.support.web;
 
-//import com.zt.thread.ThreadResponse;
+import com.task.core.bean.RunTaskInfo;
 import com.task.core.support.logger.ProjectRunLogger;
-import com.task.core.util.GsonUtils;
+import com.task.core.support.task.RunTaskSupervise;
+import com.task.core.support.task.group.ExcSupervise;
+import com.task.core.util.Audit;
+import com.task.core.util.HttpUtils;
+import com.task.core.util.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
-public abstract class StartController {
-
+/**
+ *
+ * @author Frank·tins
+ */
+@RequestMapping(value = "/tmc")
+public final class StartController implements Controller {
 
     private Logger logger = LogManager.getLogger(StartController.class);
 
-    public static final int AUTO_THREAD_NUMBER = -1;
+    private static final String threadNumberMsg = "threadNumber [history : %0] === >>> [new : %1]";
+    @Autowired
+    private ExcSupervise excSupervise;
 
-    public static final String AUTO_RUN_ID = "AUTO_RUN_ID";
-
-    //任务标识
-    private String threadId;
-
-    //当前运行标识
-    private String runId;
-//
-//    protected  final void init(Class type){
-//        threadId = ThreadSupervise.register(type);
-//    }
-//
-//    protected final void init(String sgtin, String name, String describe, int threadNumber, boolean enable){
-//        threadId = ThreadSupervise.register(sgtin, name, describe, threadNumber, enable);
-//    }
-//
-//    protected  final void init(String sgtin, String name, String describe){
-//        threadId = ThreadSupervise.register(sgtin, name, describe);
-//    }
-//
-//    @ExceptionHandler(value = IllegalAccessException.class)
-//    public ThreadResponse taskIllegalAccessException(IllegalAccessException e){
-//        return ThreadResponse.ERROR(HttpUtils.getUrl() + " " + e.getMessage());
-//    }
-//
-//    @PostMapping("/enable")
-//    public final ThreadResponse enable() throws IllegalAccessException{
-//        RunThreadSupervise.enableThread(threadId);
-//        return ThreadResponse.SUCCESS(HttpUtils.getUrl() + " enable");
-//    }
-//
-//    @PostMapping("/disable")
-//    public final ThreadResponse disable() throws IllegalAccessException{
-//        RunThreadSupervise.disableThread(threadId);
-//        return ThreadResponse.SUCCESS(HttpUtils.getUrl() + " disable");
-//    }
-//
-//    @PostMapping("/run")
-//    public final ThreadResponse run() throws IllegalAccessException{
-//        if(!RunThreadSupervise.isItRunning(threadId)) {
-//            task();
-//            return ThreadResponse.SUCCESS("尝试唤醒数据任务");
-//        }else return ThreadResponse.ERROR("当前数据任务正在运行中");
-//    }
-//
-//    @RequestMapping(value = "/info", method = {RequestMethod.GET, RequestMethod.POST})
-//    public final ThreadResponse info() throws IllegalAccessException{
-//        return ThreadResponse.SUCCESS("SUCCESS", ProjectRunLogger.getRunThread(threadId));
-//    }
-//
-    @RequestMapping(value = "/logger", method = {RequestMethod.GET, RequestMethod.POST})
-    public final Object logger() throws IllegalAccessException{
-//        logger.info("ip:" + HttpUtils.getRequest().getLocalAddr() + "get Logger uri: " + HttpUtils.getUrl() + "");
-        return GsonUtils.toString(ProjectRunLogger.getRunThreadLogger("myTest"));
+    public StartController(){
+        logger.debug("TMC [Web Manage Core] [START]");
     }
-//
-//    @RequestMapping(value = "/power", method = {RequestMethod.GET, RequestMethod.POST})
-//    public ThreadResponse power(Integer threadNumber) throws IllegalAccessException{
-//        int historyThreadNumber = RunThreadSupervise.setRunThreadNumber(threadId, threadNumber);
-//        String log = HttpUtils.getUrl() +" this threadNumber [ "
-//                + historyThreadNumber + " => " + threadNumber + " ]";
-//        return ThreadResponse.SUCCESS(log);
-//    }
-//
-//    public String getThreadId() {
-//        return threadId;
-//    }
-//
-//    protected int getThreadNumber(){
-//        try {
-//            return ProjectRunLogger.getRunThread(getThreadId()).getThreadNumber();
-//        } catch (IllegalAccessException e) {
-//            return ThreadSupervise.DEFAULT_THREAD_NUMBER;
-//        }
-//    }
-//
-//    public abstract void task();
-//
+
+    @PostMapping("{code}/enable")
+    public final TaskManageResponse enable(@PathVariable String code) throws IllegalAccessException{
+        RunTaskInfo runTaskInfo = auditCode(code);
+        RunTaskSupervise.enableThread(code);
+        return TaskManageResponse.SUCCESSDATA(runTaskInfo);
+    }
+
+    @PostMapping("{code}/disable")
+    public final TaskManageResponse disable(@PathVariable String code) throws IllegalAccessException{
+        RunTaskInfo runTaskInfo = auditCode(code);
+        RunTaskSupervise.disableThread(code);
+        return TaskManageResponse.SUCCESSDATA(runTaskInfo);
+    }
+
+    @PostMapping("{code}/run")
+    public final TaskManageResponse run(@PathVariable String code, Boolean isAsync) throws IllegalAccessException{
+        RunTaskInfo runTaskInfo = auditCode(code);
+        if(!RunTaskSupervise.isItRunning(code)) {
+
+            Map<String,Object> parameter = HttpUtils.getParameter("code", "isAsync");
+            if(isAsync){
+                excSupervise.asyncExc(runTaskInfo,parameter);
+                return TaskManageResponse.SUCCESS("尝试唤醒数据任务", runTaskInfo);
+            } else {
+                try {
+                    excSupervise.exc(runTaskInfo,parameter);
+                    return TaskManageResponse.SUCCESS("唤醒成功等待执行任务组", runTaskInfo);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                    return TaskManageResponse.SUCCESS("唤醒失败", runTaskInfo);
+                }
+            }
 
 
+        }else {
+            return TaskManageResponse.ERROR("当前数据任务正在运行中", runTaskInfo);
+        }
+    }
+
+    @RequestMapping(value = "{code}/info", method = {RequestMethod.GET, RequestMethod.POST})
+    public final TaskManageResponse info(@PathVariable String code) throws IllegalAccessException{
+        RunTaskInfo runTaskInfo = auditCode(code);
+        return TaskManageResponse.SUCCESS("SUCCESS", runTaskInfo);
+    }
+
+    @RequestMapping(value = "{code}/logger", method = {RequestMethod.GET, RequestMethod.POST})
+    public final RunTaskInfo logger(@PathVariable String code) throws IllegalAccessException{
+        RunTaskInfo runTaskInfo = auditCode(code);
+        return ProjectRunLogger.getRunThreadLogger(runTaskInfo.getSgtin());
+    }
+
+    @PostMapping(value = "{code}/power")
+    public TaskManageResponse power(@PathVariable String code, Integer threadNumber) throws IllegalAccessException{
+        RunTaskInfo runTaskInfo = auditCode(code);
+        int historyThreadNumber = RunTaskSupervise.setRunThreadNumber(runTaskInfo.getSgtin(), threadNumber);
+        String msg = StringUtils.format(threadNumberMsg, historyThreadNumber, threadNumber);
+        return TaskManageResponse.SUCCESS(msg);
+    }
+
+
+    private RunTaskInfo auditCode(String code) throws IllegalAccessException {
+        RunTaskInfo runTaskInfo = ProjectRunLogger.getRunThread(code);
+        Audit.isNotBank("", code);
+        Audit.isNotNull("", runTaskInfo);
+        return runTaskInfo;
+    }
+
+    @Override
+    public ModelAndView handleRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
 }

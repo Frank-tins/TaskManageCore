@@ -26,7 +26,7 @@ public class ExpManageCore {
         String expType = exp.substring(0,exp.indexOf("[")).toUpperCase();
         String expClass = exp.substring(exp.indexOf("[" + 1, exp.indexOf("(")));
         String expMethod = exp.substring(exp.indexOf("(") + 1, exp.indexOf(")"));
-        List<Object> rel = null;
+        List<Object> rel ;
 
         Parameter[] parameters = baseMethod.getParameters();
 
@@ -38,9 +38,9 @@ public class ExpManageCore {
             }
         }
 
-        Object obj =null;
+        Object obj ;
 
-        Class type = null;
+        Class type ;
         if("MAPPER".equals(expType)) {
             try {
                 type = Class.forName(expClass, true, ClassLoader.getSystemClassLoader());
@@ -50,19 +50,19 @@ public class ExpManageCore {
             obj = SpringUtil.getBean(type);
         }else if("BEAN".equals(expType)) {
             obj = SpringUtil.getBean(expClass);
-            if(obj == null) throw new DataExpException("Bean not found");
+            if(obj == null){ throw new DataExpException("error : Bean not found.");}
             type = obj.getClass();
         }else {
             throw new DataExpException("Exp incorrect");
         }
 
-        Method method = null;
+        Method method;
         try {
             method = type.getDeclaredMethod(expMethod);
         } catch (NoSuchMethodException e) {
             throw new DataExpException(e.getMessage());
         }
-        Object expRel = null;
+        Object expRel;
         try {
             expRel = method.invoke(obj, parameterValues);
         } catch (Exception e){

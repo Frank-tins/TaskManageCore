@@ -8,9 +8,9 @@ public final class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
         Boolean isString = false;
         isString = objs.length > 0 && objs[0] instanceof String;
         for (int i = 0; i < objs.length; i++) {
-            if (objs[i] == obj) return true;
-            if(objs[i].equals(obj)) return true;
-            if(isString && objs[i].equals(obj == null ? "null" : obj.toString())) return true;
+            if (objs[i] == obj){ return true;}
+            if(objs[i].equals(obj)){ return true;}
+            if(isString && objs[i].equals(obj == null ? "null" : obj.toString())){ return true;}
         }
         return false;
     }
@@ -29,12 +29,17 @@ public final class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
      * @throws IllegalArgumentException
      */
     public static Boolean isBank(Object obj) throws IllegalArgumentException{
-        if(obj == null) return true;
-        if(obj instanceof Map) return ((Map) obj).size() == 0 ;
-        if(obj instanceof Collection) return ((Collection) obj).size() == 0 ;
+        if(obj == null){ return true;}
+        if(obj instanceof Map){ return ((Map) obj).size() == 0 ;}
+        if(obj instanceof Collection){ return ((Collection) obj).size() == 0 ;}
         if(obj.getClass().isArray()){
             Object [] array = (Object[]) obj;
-            return array.length == 0;
+            for (Object o : array) {
+                if(o != null){
+                    return false;
+                }
+            }
+            return true;
         }
         return null;
     }

@@ -2,6 +2,7 @@ package com.task.core.support.task;
 
 
 import com.task.core.bean.RunTaskInfo;
+import com.task.core.bean.TaskRunLogger;
 import com.task.core.util.Audit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,13 +12,18 @@ import java.time.LocalDateTime;
 
 public final class RunTaskSupervise {
 
-    private static final String EXCEPTION_NOT_FOUND = "The task doesn't exist";
+//    private static final String EXCEPTION_NOT_FOUND = "The task doesn't exist";
+
+
+
     private static final String EXCEPTION_RUNNING = "The task is running";
+    private static final String EXCEPTION_NOT_ENABLE = "The task not enable";
     private static final String EXCEPTION_NOT_RUNNING = "The task is not running";
     private static final String EXCEPTION_TASK_OPERATION = "The task has been ";
     private static final String EXCEPTION_TASK_UNREASONABLE_NUMBER_THREADS = "Unreasonable number of threads";
     private static final String EXCEPTION_TASK_EXPECTATIONS_NUMBER_THREADS = "Number of threads exceeded expectations";
-
+    private static final String STRING_ENABLE = "enable";
+    private static final String STRING_DISABLE = "disable";
     private static final int MAX_THREAD_NUMBER = 1000;
 
     private static Logger logger = LogManager.getLogger(RunTaskSupervise.class);
@@ -30,7 +36,7 @@ public final class RunTaskSupervise {
     public static synchronized void enableThread(String taskId) throws IllegalAccessException{
         RunTaskInfo runTaskInfo = getRunTaskInfo(taskId);
         //重复启动
-        if(runTaskInfo.isEnable()) throw new IllegalAccessException(EXCEPTION_TASK_OPERATION + "enabled");
+        if(runTaskInfo.isEnable()) throw new IllegalAccessException(EXCEPTION_TASK_OPERATION + STRING_ENABLE);
         logger.info("enable -- taskId:" + taskId );
         runTaskInfo.setEnable(true);
     }
@@ -43,9 +49,9 @@ public final class RunTaskSupervise {
     public static synchronized void disableThread(String taskId) throws IllegalAccessException{
         RunTaskInfo runTaskInfo = getRunTaskInfo(taskId);
         //重复禁用
-        if(!runTaskInfo.isEnable()) throw new IllegalAccessException(EXCEPTION_TASK_OPERATION + "disable");
+        if(!runTaskInfo.isEnable()){ throw new IllegalAccessException(EXCEPTION_TASK_OPERATION + STRING_DISABLE);}
         //正在运行
-        if(runTaskInfo.isRunTime()) throw new IllegalAccessException(EXCEPTION_RUNNING);
+        if(runTaskInfo.isRunTime()){ throw new IllegalAccessException(EXCEPTION_RUNNING);}
         logger.info("disable -- taskId:" + taskId );
         runTaskInfo.setEnable(false);
     }
@@ -58,8 +64,9 @@ public final class RunTaskSupervise {
      */
     public static synchronized boolean runTheLock(String taskId)throws IllegalAccessException{
         RunTaskInfo runTaskInfo = getRunTaskInfo(taskId);
+        if(!runTaskInfo.isEnable()){ throw new IllegalAccessException(EXCEPTION_NOT_ENABLE);}
         //正在运行
-        if(runTaskInfo.isRunTime()) throw new IllegalAccessException(EXCEPTION_RUNNING);
+        if(runTaskInfo.isRunTime()){ throw new IllegalAccessException(EXCEPTION_RUNNING);}
         runTaskInfo.setRunTime(true);
         logger.info(runTaskInfo.getSgtin() + " task run ...");
         return true;
@@ -101,13 +108,11 @@ public final class RunTaskSupervise {
     public static synchronized int setRunThreadNumber(String taskId, Integer  threadNumber)throws IllegalAccessException{
         RunTaskInfo runTaskInfo = getRunTaskInfo(taskId);
         //不符合规范的value
-        if(threadNumber == null || threadNumber < 1) throw new IllegalAccessException(EXCEPTION_TASK_UNREASONABLE_NUMBER_THREADS);
+        if(threadNumber == null || threadNumber < 1){ throw new IllegalAccessException(EXCEPTION_TASK_UNREASONABLE_NUMBER_THREADS);}
         //value 过大
-        if(threadNumber > MAX_THREAD_NUMBER) throw new IllegalAccessException(EXCEPTION_TASK_EXPECTATIONS_NUMBER_THREADS);
+        if(threadNumber > MAX_THREAD_NUMBER){ throw new IllegalAccessException(EXCEPTION_TASK_EXPECTATIONS_NUMBER_THREADS);}
         int historyThreadNumber = runTaskInfo.getThreadNumber();
         runTaskInfo.setThreadNumber(threadNumber);
-        //TODO
-//        logger.info(HttpUtils.getUrl() + " threadNumber [ " + historyThreadNumber + " => " + threadNumber + " ]");
         return historyThreadNumber;
     }
 
@@ -131,7 +136,7 @@ public final class RunTaskSupervise {
      */
     public static void addLogger(String taskId, String msg) throws IllegalAccessException {
         RunTaskInfo runTaskInfo = getRunTaskInfo(taskId);
-        runTaskInfo.getRunLogger().add(new RunTaskInfo.TaskRunLogger(LocalDateTime.now(), msg));
+        runTaskInfo.getRunLogger().add(new TaskRunLogger(LocalDateTime.now(), msg));
     }
 
 

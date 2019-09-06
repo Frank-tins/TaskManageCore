@@ -25,19 +25,6 @@ public class SpringUtil implements ApplicationContextAware {
             SpringUtil.applicationContext = applicationContext;
         }
     }
-//    public static void addMapping() throws Exception {
-//        requestMappingHandlerMapping =( RequestMappingHandlerMapping)applicationContext.getBean("requestMappingHandlerMapping");
-//        DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
-//
-//        URLClassLoader classLoader = new URLClassLoader(new URL[]{new URL(com.example.dynamicmap.one.MappingService.class.getResource("/") + "1.jar")});
-//        Class<?> myController = classLoader.loadClass("com.example.dynamicmap.MyController");
-//        // 这里通过builder直接生成了mycontrooler的definition，然后注册进去
-//        BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(myController);
-//        defaultListableBeanFactory.registerBeanDefinition("myc", beanDefinitionBuilder.getBeanDefinition());
-//        Method method=requestMappingHandlerMapping.getClass().getSuperclass().getSuperclass().getDeclaredMethod("detectHandlerMethods",Object.class);
-//        method.setAccessible(true);
-//        method.invoke(requestMappingHandlerMapping,"myc");
-//    }
 
     /**
      * 获取applicationContext

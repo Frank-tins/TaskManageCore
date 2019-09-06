@@ -17,12 +17,10 @@ import org.springframework.util.SystemPropertyUtils;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.Method;
+import java.util.*;
 
-public class ClassScaner implements ResourceLoaderAware {
+public class ClassScanner implements ResourceLoaderAware {
 
     //保存过滤规则要排除的注解
     private final List<TypeFilter> includeFilters = new LinkedList<TypeFilter>();
@@ -33,7 +31,7 @@ public class ClassScaner implements ResourceLoaderAware {
 
     public static Set<Class> scan(String[] basePackages,
                                   Class<? extends Annotation>... annotations) {
-        ClassScaner cs = new ClassScaner();
+        ClassScanner cs = new ClassScanner();
 
         if(annotations != null) {
             for (Class anno : annotations) {
@@ -42,13 +40,12 @@ public class ClassScaner implements ResourceLoaderAware {
         }
 
         Set<Class> classes = new HashSet<Class>();
-        for (String s : basePackages)
-            classes.addAll(cs.doScan(s));
+        for (String s : basePackages){classes.addAll(cs.doScan(s));}
         return classes;
     }
 
     public static Set<Class> scan(String basePackages, Class<? extends Annotation>... annotations) {
-        return ClassScaner.scan(StringUtils.tokenizeToStringArray(basePackages, ",; \t\n"), annotations);
+        return ClassScanner.scan(StringUtils.tokenizeToStringArray(basePackages, ",; \t\n"), annotations);
     }
 
     public final ResourceLoader getResourceLoader() {
@@ -122,5 +119,39 @@ public class ClassScaner implements ResourceLoaderAware {
         }
         return false;
     }
+
+
+    public static <A extends Annotation>  Map<A, Method> scannerMethod(Class type, Class<A> annotationType, boolean accessible ){
+        Method [] methods = null;
+        if(accessible){
+            methods = type.getDeclaredMethods();
+            for (Method method : methods) {
+                method.setAccessible(accessible);
+            }
+        }else{
+            methods = type.getMethods();
+        }
+        Map<A, Method> rel = new HashMap<>();
+        for (Method method : methods) {
+            A annotation =  method.getAnnotation(annotationType);
+            if(annotation != null){
+                rel.put(annotation, method);
+            }
+        }
+        return rel;
+    }
+
+    public static <A extends Annotation>  Map<A, Method> scannerAllMethod(Set<Class> types, Class<A> annotationType, boolean accessible ){
+
+        Map<A, Method> rel = new HashMap<>();
+
+        for (Class type : types) {
+            rel.putAll(scannerMethod(type, annotationType, accessible));
+        }
+
+        return rel;
+    }
+
+
 
 }

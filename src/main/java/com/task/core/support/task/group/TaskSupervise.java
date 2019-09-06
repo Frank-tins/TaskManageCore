@@ -2,14 +2,13 @@ package com.task.core.support.task.group;
 
 import com.task.core.bean.RunTaskInfo;
 import com.task.core.enums.LogLevel;
-import com.task.core.enums.RunStatus;
+import com.task.core.bean.RunStatus;
 import com.task.core.enums.Status;
 import com.task.core.support.logger.ProjectRunLogger;
 import com.task.core.support.task.RunTaskSupervise;
 import com.task.core.support.thread.base.RunnableExtend;
 import com.task.core.support.thread.data.TaskRunnableLocal;
 import com.task.core.util.CollectionUtils;
-import com.task.core.util.DateUtils;
 import com.task.core.util.GsonUtils;
 import com.task.core.util.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +16,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
+/**
+ * 任务注册器
+ * @author Frank
+ */
 public class TaskSupervise {
 
 
@@ -28,12 +31,12 @@ public class TaskSupervise {
 
     /**
      * 任务拆分
-     * @param datas
+     * @param dataArray
      * @param threadNum
      * @return
      */
-    public static final List<List> allocationTask(List datas, int threadNum){
-        return CollectionUtils.averageAssign(datas, threadNum);
+    public static final List<List> allocationTask(List dataArray, int threadNum){
+        return CollectionUtils.averageAssign(dataArray, threadNum);
     }
 
     /**
@@ -48,7 +51,7 @@ public class TaskSupervise {
     static final String registerTask(int taskNumber, String taskId, String runId){
         String uuid = uuid = StringUtils.UUID() + taskId;
         if(TASK_TABLE.get(runId) != null) logger.error("error runId.");
-        if(StringUtils.isNotBank(runId)) uuid = runId;
+        if(StringUtils.isNotBlank(runId)) uuid = runId;
         RunEntityInfo runEntityInfo = new RunEntityInfo(uuid, new ArrayList<>(), taskId, taskNumber);
         TASK_TABLE.put(uuid, runEntityInfo);
         return uuid;
@@ -85,7 +88,7 @@ public class TaskSupervise {
      */
     private final static void taskOver(String runID) throws IllegalAccessException {
         RunEntityInfo runEntityInfo = TASK_TABLE.get(runID);
-        TaskRunnableLocal taskRunnableLocal = TaskSuperviseAnalytical.getTaskRunnableLocal();
+        TaskRunnableLocal taskRunnableLocal = ExcSupervise.getTaskRunnableLocal();
         RunTaskInfo runTaskInfo = null;
         try {
             runTaskInfo = ProjectRunLogger.getRunThread(runEntityInfo.getTaskId());

@@ -1,12 +1,18 @@
 package com.task.core.bean;
 
+import com.task.core.util.StringUtils;
+import org.springframework.core.annotation.AnnotationAttributes;
+
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * 线程池配置信息实体
+ *
+ * @author Frank
+ */
 public class ThreadPoolConfig {
 
     private Integer maxPool;
-
-    private Integer prefix;
 
     private Integer priority;
 
@@ -20,6 +26,23 @@ public class ThreadPoolConfig {
 
     private BlockingQueue blockingQueue;
 
+    public ThreadPoolConfig(){}
+
+    public ThreadPoolConfig(AnnotationAttributes annotationAttributesArray) {
+        this.maxPool = annotationAttributesArray.getNumber("").intValue();
+
+        this.priority = annotationAttributesArray.getNumber("").intValue();
+
+        this.corePoolSize = annotationAttributesArray.getNumber("").intValue();
+
+        this.queueCapacity = annotationAttributesArray.getNumber("").intValue();
+
+        this.keepAliveTimeSecond = annotationAttributesArray.getNumber("").intValue();
+
+        this.threadNamePrefix = annotationAttributesArray.getString("");
+
+    }
+
     public BlockingQueue getBlockingQueue() {
         return blockingQueue;
     }
@@ -32,9 +55,6 @@ public class ThreadPoolConfig {
         return maxPool;
     }
 
-    public Integer getPrefix() {
-        return prefix;
-    }
 
     public Integer getPriority() {
         return priority;
@@ -60,10 +80,6 @@ public class ThreadPoolConfig {
         this.maxPool = maxPool;
     }
 
-    public void setPrefix(Integer prefix) {
-        this.prefix = prefix;
-    }
-
     public void setPriority(Integer priority) {
         this.priority = priority;
     }
@@ -82,5 +98,15 @@ public class ThreadPoolConfig {
 
     public void setKeepAliveTimeSecond(Integer keepAliveTimeSecond) {
         this.keepAliveTimeSecond = keepAliveTimeSecond;
+    }
+
+    public boolean isEnpty(){
+        return maxPool == null
+                && priority == null
+                && corePoolSize == null
+                && queueCapacity == null
+                && keepAliveTimeSecond == null
+                && StringUtils.isEmpty(threadNamePrefix)
+                && blockingQueue == null;
     }
 }

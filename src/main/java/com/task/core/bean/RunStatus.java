@@ -1,7 +1,14 @@
-package com.task.core.enums;
+package com.task.core.bean;
+
+import com.task.core.enums.Status;
 
 import java.util.Date;
 
+/**
+ * 单线运行结果
+ *
+ * @author Frank
+ */
 public class RunStatus {
 
     private Status status ;

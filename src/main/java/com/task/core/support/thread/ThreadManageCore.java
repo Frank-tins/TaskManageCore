@@ -2,39 +2,38 @@ package com.task.core.support.thread;
 
 import com.task.core.bean.RunTaskInfo;
 import com.task.core.bean.ThreadPoolConfig;
-import com.task.core.support.logger.ProjectRunLogger;
 import com.task.core.support.thread.base.RunnableExtend;
 import com.task.core.support.thread.data.TaskRunnableLocal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
+ * 线程队列创建
+ * 线程池初始化
+ * 线程缓存操作
  * @author Frank
  */
-//@Component
-public class ThreadSportCore {
+public class ThreadManageCore {
 
-    private Logger logger = LogManager.getLogger(ThreadSportCore.class);
+    private Logger logger = LogManager.getLogger(ThreadManageCore.class);
 
-    public ThreadSportCore(ThreadPoolConfig threadPoolConfig) {
+    public ThreadManageCore(ThreadPoolConfig threadPoolConfig) {
         this.threadPoolConfig = threadPoolConfig;
+        logger.debug("TMC [THREAD MANAGE CORE] [START] ");
     }
 
-    //    @Autowired
     private ThreadPoolConfig threadPoolConfig;
 
     private static TaskRunnableLocal taskRunnableLocal;
 
     public void setTaskRunnableLocal(TaskRunnableLocal taskRunnableLocal){
-        if(this.taskRunnableLocal == null) this.taskRunnableLocal = taskRunnableLocal;
+        if (this.taskRunnableLocal == null) this.taskRunnableLocal = taskRunnableLocal;
     }
 
 
-    public ThreadSportCore init(){
+    public ThreadManageCore init(){
         ThreadHandler.init(threadPoolConfig);
         return this;
     }

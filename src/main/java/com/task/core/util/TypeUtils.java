@@ -3,6 +3,10 @@ package com.task.core.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Map;
+
 /**
  * 类型工具
  *
@@ -48,6 +52,18 @@ public class TypeUtils {
             return (boolean)object == false;
         }
         throw new IllegalArgumentException("参数异常");
+    }
+
+
+    public static Object[] packageMethodParameter(Method method, Map<String, Object> parameter){
+        method.setAccessible(true);
+        Parameter[] parameters = method.getParameters();
+        Object [] rel = new Object[parameters.length];
+        for (int i = 0; i < parameters.length; i++) {
+            Parameter methodParameter = parameters[i];
+            rel[i] = parameter.get(methodParameter.getName());
+        }
+        return rel;
     }
 
 }

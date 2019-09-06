@@ -4,6 +4,7 @@ import com.task.core.bean.ThreadPoolConfig;
 import com.task.core.support.thread.base.TaskRejectedExecutionHandler;
 import com.task.core.support.thread.base.TaskThreadFactory;
 import com.task.core.util.Filling;
+import com.task.core.util.GsonUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,6 +53,7 @@ class TaskThreadPool {
         threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maxPool, keepAliveTimeSecond, TimeUnit.SECONDS, queue,
                 taskThreadFactory, taskRejectedExecutionHandler);
 
+        logger.info("TMS [THREAD POOL INIT] : " + GsonUtils.toString(threadPoolConfig));
 
     }
 

@@ -8,10 +8,11 @@ import com.task.core.util.GsonUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
- *
+ * @author Frank
  */
 public final class TaskManageCoreSupervise {
 
@@ -23,28 +24,17 @@ public final class TaskManageCoreSupervise {
 
     static {runLogger.init(TASK_ALL);}
 
-    public static String register(String sgtin, String name, String describe, Integer threadNumber, Boolean enable, DataType dataType, String exp, LogLevel level){
-        RunTaskInfo runTaskInfo = new RunTaskInfo(sgtin, name, describe, enable, threadNumber, dataType, exp, level);
-        logger.info("register : " + sgtin + " Json: " + GsonUtils.toString(runTaskInfo));
-        if(TASK_ALL.get(sgtin) != null) throw new Error("The same task sequence number cannot be registered.");
+    public static String register(String sgtin, String name, String describe, Integer threadNumber,
+                                  Boolean enable, DataType dataType, String exp, LogLevel level, Method method){
+        RunTaskInfo runTaskInfo = new RunTaskInfo(sgtin, name, describe, enable, threadNumber, dataType, exp, level, method);
+        logger.info("TMC [TASK] register : " + sgtin + " Json: " + GsonUtils.toString(runTaskInfo));
+        String errorMsg = "The same task sequence number cannot be registered.";
+        if(TASK_ALL.get(sgtin) != null) {
+            throw new RuntimeException(errorMsg);
+        }
         TASK_ALL.put(sgtin, runTaskInfo);
         return sgtin;
     }
 
-    public static Set<RunTaskInfo> getEnableThread(){
-        Set<RunTaskInfo> enables = new HashSet<>();
-        TASK_ALL.values().forEach(runThreadInfo -> {
-            if(runThreadInfo.isEnable()) enables.add(runThreadInfo);
-        });
-        return enables;
-    }
-
-//    public static Set<RunTaskInfo> getAll(){
-//        return new HashSet<>(threadAll.values());
-//    }
-//
-//    static RunLogger getRunLogger(){
-//        return runLogger.getRunLogger(getEnableThread());
-//    }
 
 }

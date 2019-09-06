@@ -1,5 +1,8 @@
 package com.task.core.enums;
 
+/**
+ * 单线运行状态
+ */
 public enum Status{
     //成功
     ACCOMPLISH,

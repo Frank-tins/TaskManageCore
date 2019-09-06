@@ -19,11 +19,7 @@ class ThreadHandler {
 
     private Logger logger = LogManager.getLogger(ThreadHandler.class);
 
-//    ThreadLocal<>
-
-//    private static TaskThreadPool taskThreadPool ;
-
-    public static TaskThreadPool taskThreadPool ;
+    static TaskThreadPool taskThreadPool ;
 
     static void init(ThreadPoolConfig threadPoolConfig){
         Audit.isNotNull("ERROR : Is an empty configuration. Failed to initialize thread set.", threadPoolConfig);

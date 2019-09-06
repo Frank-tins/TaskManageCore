@@ -10,9 +10,9 @@ import java.lang.annotation.*;
  * @author Frank
  */
 @Documented
-@Target({ElementType.TYPE})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Task {
+public @interface CreateTask {
     /**
      * 任务名称
      * @return
@@ -23,7 +23,7 @@ public @interface Task {
      * 任务码 (唯一)
      * @return
      */
-    String code() default "";
+    String code();
 
     /**
      * 任务描述

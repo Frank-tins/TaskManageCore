@@ -17,7 +17,7 @@ public class Filling {
     public static <T> T autoFilling(Class<T> type, T value, T defaultValue)throws NullPointerException{
         if(type == null) throw new NullPointerException();
         if(TypeUtils.isBaseClass(type)){
-            if(StringUtils.isBank(value)) return defaultValue;
+            if(StringUtils.isBlank(value)) return defaultValue;
             if(TypeUtils.isBaseDefaultValue(value)) return defaultValue;
         }
         Field[] fields = type.getDeclaredFields();
@@ -25,7 +25,7 @@ public class Filling {
             try {
                 field.setAccessible(true);
                 Object val = field.get(value);
-                if(StringUtils.isBank(val)) {
+                if(StringUtils.isBlank(val)) {
                     val = field.get(defaultValue);
                     field.set(value, val);
                 }

@@ -1,7 +1,5 @@
 package com.task.core.util;
 
-import com.google.gson.Gson;
-
 /**
  *
  * DATAChecked
@@ -18,9 +16,8 @@ public class Audit {
      * @throws NullPointerException
      */
     public static void isNotNull(String msg, Object... objs) throws IllegalArgumentException, NullPointerException{
-        if(objs == null) throw new NullPointerException();
-        for (int i = 0; i < objs.length; i++)
-            if (objs[i] == null) throw new IllegalArgumentException(msg);
+        if(objs == null){ throw new NullPointerException();}
+        for (int i = 0; i < objs.length; i++){ if (objs[i] == null) {throw new IllegalArgumentException(msg);}}
     }
 
     /**
@@ -31,9 +28,8 @@ public class Audit {
      * @throws NullPointerException
      */
     public static void isNotBank(String msg, String... objs) throws IllegalArgumentException, NullPointerException{
-        if(objs == null) throw new NullPointerException();
-        for (int i = 0; i < objs.length; i++)
-            if (StringUtils.isBank(objs[i])) throw new IllegalArgumentException(msg);
+        if(objs == null){ throw new NullPointerException();}
+        for (int i = 0; i < objs.length; i++){ if (StringUtils.isBlank(objs[i])){ throw new IllegalArgumentException(msg);}}
     }
 
     /**
@@ -44,9 +40,8 @@ public class Audit {
      * @throws NullPointerException
      */
     public static void thereAreValidValues(String msg, Object... objs) throws IllegalArgumentException, NullPointerException {
-        if (objs == null) throw new NullPointerException();
-        for (int i = 0; i < objs.length; i++)
-            if (objs[i] != null) return;
+        if (objs == null){ throw new NullPointerException();}
+        for (int i = 0; i < objs.length; i++){ if (objs[i] != null){ return;}}
         throw new IllegalArgumentException(msg);
     }
 
@@ -58,14 +53,15 @@ public class Audit {
      * @throws NullPointerException
      */
     public static void arraysNotNull(String msg, Object... objs) throws IllegalArgumentException{
-        if(objs == null) throw new NullPointerException();
-        for (int i = 0; i < objs.length; i++)  arrayNotNull(msg, objs[i]);
+        if(objs == null){ throw new NullPointerException();}
+        for (int i = 0; i < objs.length; i++){  arrayNotNull(msg, objs[i]);}
     }
 
     public static void arrayNotNull(String msg, Object objs) throws IllegalArgumentException{
         Boolean rel = ArrayUtils.isBank(objs);
-        if(rel == null) throw new IllegalArgumentException("obj not a Array");
-        if (rel) throw new IllegalArgumentException(msg);
+        String logger = "obj not a Array";
+        if(rel == null){ throw new IllegalArgumentException(logger);}
+        if (rel){ throw new IllegalArgumentException(msg);}
     }
 
     /**
@@ -75,35 +71,38 @@ public class Audit {
      * @throws IllegalArgumentException
      * @throws NullPointerException
      */
-    public static void validDataObjects(String msg, Object... objs) throws IllegalArgumentException, NullPointerException{
-        if(objs == null) throw new NullPointerException();
-        for (int i = 0; i < objs.length; i++) {
-            //为空跳过
-            if (objs[i] == null) continue;
-            Boolean arrayRel = ArrayUtils.isBank(objs[i]);
-            //为空表示为Object 且非空
-            if(arrayRel == null) return;
-            //不为空表示 为集合类型 如果为false 表示集合存在内容
-            if(!arrayRel) return;
-        }
-        throw new IllegalArgumentException(msg);
-    }
+//    public static void validDataObjects(String msg, Object... objs) throws IllegalArgumentException, NullPointerException{
+//        if(objs == null){ throw new NullPointerException();}
+//        for (int i = 0; i < objs.length; i++) {
+//            //为空跳过
+//            if (objs[i] == null){ continue;}
+//            Boolean arrayRel = ArrayUtils.isBank(objs[i]);
+//            //为空表示为Object 且非空
+//            if(arrayRel == null){ return;}
+//            //不为空表示 为集合类型 如果为false 表示集合存在内容
+//            if(!arrayRel){ return;}
+//        }
+//        throw new IllegalArgumentException(msg);
+//    }
 
 
-    public static <T extends Number> void numberValid(String msg, T min, T max , T... values) throws IllegalArgumentException, NullPointerException{
-        if((min == null && max == null) || (values.length == 0)) throw new NullPointerException();
-        for (int i = 0; i < values.length; i++) {
-            Number value = values[i];
-            if(value == null) continue;
-            if(value instanceof Integer) value.longValue();
-            if(value instanceof Double) value.intValue();
-            if(value instanceof Long) value.intValue();
-            if(value instanceof Float) value.intValue();
-            if(value instanceof Byte) value.intValue();
-            if(value instanceof Short) value.intValue();
-//            if(values[i] > max) throw new IllegalArgumentException(msg);
-        }
-    }
+//    public static <T extends Number> void numberValid(String msg, T min, T max , T... values) throws IllegalArgumentException, NullPointerException{
+//
+//        boolean notNull = (min == null && max == null);
+//        boolean lengthIgZero = values.length == 0;
+//        if(notNull || lengthIgZero){ throw new NullPointerException();}
+//        for (int i = 0; i < values.length; i++) {
+//            Number value = values[i];
+//            if(value == null) continue;
+//            if(value instanceof Integer){ value.longValue();}
+//            if(value instanceof Double){ value.intValue();}
+//            if(value instanceof Long){ value.intValue();}
+//            if(value instanceof Float){ value.intValue();}
+//            if(value instanceof Byte){ value.intValue();}
+//            if(value instanceof Short){ value.intValue();}
+////            if(values[i] > max) throw new IllegalArgumentException(msg);
+//        }
+//    }
 
 
 

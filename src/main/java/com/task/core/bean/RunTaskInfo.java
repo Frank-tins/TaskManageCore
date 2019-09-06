@@ -1,18 +1,23 @@
 package com.task.core.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.task.core.enums.DataType;
 import com.task.core.enums.LogLevel;
 import com.task.core.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 
+import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 任务注册信息
+ *
+ * @author Frank
  */
-public class RunTaskInfo {
+public class RunTaskInfo implements Serializable{
 
     private String sgtin;
 
@@ -34,9 +39,12 @@ public class RunTaskInfo {
 
     private LogLevel level;
 
+    @JsonIgnore
+    private transient Method method;
+
     public RunTaskInfo() {};
 
-    public RunTaskInfo(String sgtin, String name, String describe, boolean enable, int threadNumber, DataType dataType, String exp, LogLevel level) {
+    public RunTaskInfo(String sgtin, String name, String describe, boolean enable, int threadNumber, DataType dataType, String exp, LogLevel level, Method method) {
         this.sgtin = sgtin;
         this.name = name;
         this.describe = describe;
@@ -47,6 +55,15 @@ public class RunTaskInfo {
         this.dataType = dataType;
         this.exp = exp;
         this.level = level;
+        this.method = method;
+    }
+
+    public Method getMethod() {
+        return method;
+    }
+
+    public void setMethod(Method method) {
+        this.method = method;
     }
 
     public LogLevel getLevel() {
@@ -114,7 +131,7 @@ public class RunTaskInfo {
     }
 
     public void removeLogger(){
-        this.runLogger = null;
+        this.runLogger = new ArrayList<>();
     }
 
     public DataType getDataType() {
@@ -144,8 +161,8 @@ public class RunTaskInfo {
             return false;
         RunTaskInfo runTaskInfo = (RunTaskInfo) obj;
         return (runTaskInfo.sgtin == this.sgtin) ||
-        (StringUtils.isNotBank(runTaskInfo.sgtin)
-                && StringUtils.isNotBank(this.sgtin)
+        (StringUtils.isNotBlank(runTaskInfo.sgtin)
+                && StringUtils.isNotBlank(this.sgtin)
                 && runTaskInfo.sgtin.equals(this.sgtin));
     }
 
@@ -156,16 +173,6 @@ public class RunTaskInfo {
         return runTaskInfo;
     }
 
-    public static class TaskRunLogger{
 
-        private LocalDateTime runTime;
-        private String msg;
-
-        public TaskRunLogger(LocalDateTime runTime, String msg) {
-            this.runTime = runTime;
-            this.msg = msg;
-        }
-
-    }
 
 }

@@ -1,6 +1,6 @@
 logging:
-  level: info
-  level.com.zt.thrad: debug
+  level: debug
+  level.com.task.core: debug
 server:
   port: 8003
   tomcat:

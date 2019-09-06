@@ -3,6 +3,8 @@ package com.task.core.support.logger;
 import com.task.core.bean.RunLogger;
 import com.task.core.bean.RunTaskInfo;
 import com.task.core.util.Audit;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import javax.management.MBeanServer;
@@ -18,6 +20,8 @@ import java.util.*;
  */
 //@Component
 public class ProjectRunLogger {
+
+    private Logger logger = LogManager.getLogger(ProjectRunLogger.class);
 
     private final RunLogger runLogger ;
     //所有任务
@@ -41,6 +45,7 @@ public class ProjectRunLogger {
             port = "";
         }
         this.runLogger = new RunLogger(ip, port);
+        logger.debug("TMC [RUN LOGGER] [START]");
     }
 
     /**

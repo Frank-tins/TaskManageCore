@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * 运行信息
+ *
+ * @author Frank
  */
 public class RunLogger {
 
