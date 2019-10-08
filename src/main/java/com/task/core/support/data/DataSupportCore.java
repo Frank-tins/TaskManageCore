@@ -6,8 +6,8 @@ import com.task.core.enums.DataType;
 import com.task.core.excption.DataExpException;
 import com.task.core.excption.DataParameterException;
 import com.task.core.util.ArrayUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class DataSupportCore {
 
-    private Logger logger = LogManager.getLogger(DataSupportCore.class);
+    private Logger logger = LoggerFactory.getLogger(DataSupportCore.class);
 
     private ExpManageCore expManageCore = new ExpManageCore();
 

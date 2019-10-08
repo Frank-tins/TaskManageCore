@@ -11,8 +11,8 @@ import com.task.core.support.thread.data.TaskRunnableLocal;
 import com.task.core.util.CollectionUtils;
 import com.task.core.util.GsonUtils;
 import com.task.core.util.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -25,7 +25,7 @@ public class TaskSupervise {
 
     private static final Map<String, RunEntityInfo> TASK_TABLE = new HashMap<>();
 
-    private static final Logger logger = LogManager.getLogger(TaskSupervise.class);
+    private static final Logger logger = LoggerFactory.getLogger(TaskSupervise.class);
 
 
 

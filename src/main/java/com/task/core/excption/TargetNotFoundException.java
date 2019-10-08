@@ -1,7 +1,7 @@
 package com.task.core.excption;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 找不到目标对象
@@ -10,6 +10,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class TargetNotFoundException extends RuntimeException {
 
-    private Logger logger = LogManager.getLogger(TargetNotFoundException.class);
+    private Logger logger = LoggerFactory.getLogger(TargetNotFoundException.class);
 
 }

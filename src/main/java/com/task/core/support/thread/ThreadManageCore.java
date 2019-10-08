@@ -4,8 +4,8 @@ import com.task.core.bean.RunTaskInfo;
 import com.task.core.bean.ThreadPoolConfig;
 import com.task.core.support.thread.base.RunnableExtend;
 import com.task.core.support.thread.data.TaskRunnableLocal;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class ThreadManageCore {
 
-    private Logger logger = LogManager.getLogger(ThreadManageCore.class);
+    private Logger logger = LoggerFactory.getLogger(ThreadManageCore.class);
 
     public ThreadManageCore(ThreadPoolConfig threadPoolConfig) {
         this.threadPoolConfig = threadPoolConfig;

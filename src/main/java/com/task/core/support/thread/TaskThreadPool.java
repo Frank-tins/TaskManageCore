@@ -5,8 +5,8 @@ import com.task.core.support.thread.base.TaskRejectedExecutionHandler;
 import com.task.core.support.thread.base.TaskThreadFactory;
 import com.task.core.util.Filling;
 import com.task.core.util.GsonUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  */
 class TaskThreadPool {
 
-    private Logger logger = LogManager.getLogger(TaskThreadPool.class);
+    private Logger logger = LoggerFactory.getLogger(TaskThreadPool.class);
 
     private final ThreadPoolExecutor threadPoolExecutor ;
 
@@ -58,10 +58,9 @@ class TaskThreadPool {
     }
 
     private ThreadPoolConfig defaultParameter(ThreadPoolConfig threadPoolConfig){
-
         ThreadPoolConfig config = new ThreadPoolConfig();
         config.setQueueCapacity(-1);
-        config.setCorePoolSize(0);
+        config.setCorePoolSize(100);
         config.setPriority(5);
         config.setMaxPool(Integer.MAX_VALUE);
         config.setThreadNamePrefix("task-manage-core");

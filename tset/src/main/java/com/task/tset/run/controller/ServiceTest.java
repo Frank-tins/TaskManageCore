@@ -1,10 +1,11 @@
-package com.run.controller;
+package com.task.tset.run.controller;
 
 import com.task.core.annotation.CreateTask;
 import com.task.core.annotation.TaskService;
+import com.task.core.enums.DataType;
 import com.task.core.enums.LogLevel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 @TaskService
 public class ServiceTest {
 
-    private Logger logger = LogManager.getLogger(ServiceTest.class);
+    private Logger logger = LoggerFactory.getLogger(ServiceTest.class);
 
     int index = 0;
 

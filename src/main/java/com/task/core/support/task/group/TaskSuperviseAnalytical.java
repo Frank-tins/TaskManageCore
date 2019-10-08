@@ -4,8 +4,8 @@ import com.task.core.annotation.CreateTask;
 import com.task.core.support.logger.ProjectRunLogger;
 import com.task.core.support.task.RunTaskSupervise;
 import com.task.core.bean.RunTaskInfo;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
 @Aspect
 public class TaskSuperviseAnalytical {
 
-    private Logger logger = LogManager.getLogger(TaskSuperviseAnalytical.class);
+    private Logger logger = LoggerFactory.getLogger(TaskSuperviseAnalytical.class);
 
     /**
      * 执行器

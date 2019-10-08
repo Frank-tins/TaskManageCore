@@ -1,7 +1,7 @@
 package com.task.core.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class TypeUtils {
 
-    private Logger logger = LogManager.getLogger(TypeUtils.class);
+    private Logger logger = LoggerFactory.getLogger(TypeUtils.class);
 
     public static boolean isBaseType(Object object) {
         return  isBaseClass(object.getClass());

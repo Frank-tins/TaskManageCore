@@ -1,7 +1,7 @@
 package com.task.core.support.thread.base;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ThreadFactory;
 
@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadFactory;
  */
 public class TaskThreadFactory implements ThreadFactory {
 
-    private Logger logger = LogManager.getLogger(TaskThreadFactory.class);
+    private Logger logger = LoggerFactory.getLogger(TaskThreadFactory.class);
 
     private final String threadName;
 

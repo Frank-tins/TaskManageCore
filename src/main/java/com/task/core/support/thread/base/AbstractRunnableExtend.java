@@ -6,8 +6,8 @@ import com.task.core.support.thread.data.RunnableCache;
 import com.task.core.support.thread.data.TaskRunnableLocal;
 import com.task.core.util.GsonUtils;
 import com.task.core.util.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public abstract class AbstractRunnableExtend implements RunnableExtend<RunStatus> {
 
-    private Logger logger = LogManager.getLogger(AbstractRunnableExtend.class);
+    private Logger logger = LoggerFactory.getLogger(AbstractRunnableExtend.class);
     /**
      * 缓存控制器
      */
@@ -121,7 +121,7 @@ public abstract class AbstractRunnableExtend implements RunnableExtend<RunStatus
         String dataLog = StringUtils.format(ERROR_DATA_LOG, GsonUtils.toString(data));
         logger.error(dataLog);
 
-        logger.error(throwable);
+        logger.error("TMC thread execute error.", throwable);
         isError = true;
         runnableCache.addCache(ERROR_MSG, throwable.getMessage());
         return throwable;

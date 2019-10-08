@@ -1,7 +1,7 @@
 package com.task.core.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class HttpUtils {
 
-    private Logger logger = LogManager.getLogger(HttpUtils.class);
+    private Logger logger = LoggerFactory.getLogger(HttpUtils.class);
 
 
     public static Map<String, Object> getParameter(String... excludes){

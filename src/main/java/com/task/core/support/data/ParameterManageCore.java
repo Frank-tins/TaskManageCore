@@ -4,8 +4,8 @@ import com.task.core.annotation.TaskData;
 import com.task.core.excption.DataExpException;
 import com.task.core.excption.DataParameterException;
 import com.task.core.util.SpringUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class ParameterManageCore {
 
-    private Logger logger = LogManager.getLogger(ParameterManageCore.class);
+    private Logger logger = LoggerFactory.getLogger(ParameterManageCore.class);
 
     public List analysisParameter(Method method, Object[] parameterValues) throws DataParameterException {
         List rel = new ArrayList();

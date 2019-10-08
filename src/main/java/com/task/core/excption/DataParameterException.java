@@ -1,7 +1,7 @@
 package com.task.core.excption;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 获取数据参数获取异常
@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class DataParameterException extends Exception{
 
-    private Logger logger = LogManager.getLogger(DataParameterException.class);
+    private Logger logger = LoggerFactory.getLogger(DataParameterException.class);
 
     public DataParameterException(String msg) {
         super(msg);

@@ -152,6 +152,23 @@ public class ClassScanner implements ResourceLoaderAware {
         return rel;
     }
 
+    public static Method findMethodByName (Class type, String name){
+
+        Audit.isNotNull("type is not null." , type );
+        Audit.isNotBank("method name is not blank.", name);
+
+        Method [] methods = type.getMethods();
+
+        for (Method method : methods) {
+            if (name.equals(method.getName())){
+                return method;
+            }
+        }
+
+        return null;
+
+    }
+
 
 
 }

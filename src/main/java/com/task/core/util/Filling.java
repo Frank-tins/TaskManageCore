@@ -1,7 +1,7 @@
 package com.task.core.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 
@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
  */
 public class Filling {
 
-    private Logger logger = LogManager.getLogger(Filling.class);
+    private Logger logger = LoggerFactory.getLogger(Filling.class);
 
     public static <T> T autoFilling(Class<T> type, T value, T defaultValue)throws NullPointerException{
         if(type == null) throw new NullPointerException();

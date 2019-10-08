@@ -3,8 +3,8 @@ package com.task.core.support.task.group;
 import com.task.core.util.AopTargetUtils;
 import com.task.core.util.Audit;
 import com.task.core.util.SpringUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 
 import java.lang.reflect.Method;
@@ -14,9 +14,9 @@ import java.lang.reflect.Method;
  *
  * @author Frank
  */
-public class Actuator {
+public class Actuator{
 
-    private Logger logger = LogManager.getLogger(Actuator.class);
+    private Logger logger = LoggerFactory.getLogger(Actuator.class);
 
     private Method method;
 
@@ -31,6 +31,12 @@ public class Actuator {
         this.target = target;
         this.args = args;
         init(method);
+    }
+
+    private Actuator(Actuator actuator,Object [] args) {
+        this.method = actuator.getMethod();
+        this.target = actuator.getTarget();
+        this.args = args;
     }
 
     private void init(Method method) {
@@ -68,6 +74,11 @@ public class Actuator {
 
     }
 
+    public Actuator createExt(Object [] args)  {
+        Actuator actuator = new Actuator(this, args);
+        return actuator;
+    }
+
     public Method getMethod() {
         return method;
     }
@@ -99,4 +110,6 @@ public class Actuator {
     public void setBaseClass(Class baseClass) {
         this.baseClass = baseClass;
     }
+
+
 }

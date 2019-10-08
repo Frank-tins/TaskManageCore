@@ -5,8 +5,8 @@ import com.task.core.enums.LogLevel;
 import com.task.core.support.logger.ProjectRunLogger;
 import com.task.core.bean.RunTaskInfo;
 import com.task.core.util.GsonUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -16,7 +16,7 @@ import java.util.*;
  */
 public final class TaskManageCoreSupervise {
 
-    private static Logger logger = LogManager.getLogger(TaskManageCoreSupervise.class);
+    private static Logger logger = LoggerFactory.getLogger(TaskManageCoreSupervise.class);
 
     final static Map<String, RunTaskInfo> TASK_ALL = new HashMap<>();
 

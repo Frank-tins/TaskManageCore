@@ -7,8 +7,8 @@ import com.task.core.support.task.group.ExcSupervise;
 import com.task.core.util.Audit;
 import com.task.core.util.HttpUtils;
 import com.task.core.util.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,7 +25,7 @@ import java.util.Map;
 @RequestMapping(value = "/tmc")
 public final class StartController implements Controller {
 
-    private Logger logger = LogManager.getLogger(StartController.class);
+    private Logger logger = LoggerFactory.getLogger(StartController.class);
 
     private static final String threadNumberMsg = "threadNumber [history : %0] === >>> [new : %1]";
     @Autowired

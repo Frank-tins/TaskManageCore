@@ -8,14 +8,11 @@ import com.task.core.support.thread.base.RunnableExtend;
 import com.task.core.support.thread.base.RunnableExtendWork;
 import com.task.core.support.thread.data.TaskRunnableLocal;
 import com.task.core.util.TypeUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 执行器
@@ -28,7 +25,7 @@ public class ExcSupervise {
      * 缓存器
      */
     private static TaskRunnableLocal taskRunnableLocal = TaskRunnableLocal.getTaskRunnableLocal();
-    private Logger logger = LogManager.getLogger(ExcSupervise.class);
+    private Logger logger = LoggerFactory.getLogger(ExcSupervise.class);
     /**
      * 线程处理核心
      */
@@ -123,19 +120,24 @@ public class ExcSupervise {
         List<RunnableExtend> list = new ArrayList<>();
         TaskRunnableLocal.LocalRunnableBinding localRunnableBinding = taskRunnableLocal.getLocalRunnableBinding(runTaskInfo);
         boolean parameterIsExist = data != null && data.size() > 0;
-        Map<String, Object> cache = new HashMap<>();
-        cache.put(RunnableExtend.PARAMETER_PROCEEDING_METHOD, actuator);
-        cache.put(RunnableExtend.PARAMETER_RUN_ID, runId);
         List dataArray = null;
         if(parameterIsExist) {
             dataArray = TaskSupervise.allocationTask(data, runTaskInfo.getThreadNumber());
         }
         for (int i = 0; i < runTaskInfo.getThreadNumber(); i++) {
+            Object [] argsActuator = Arrays.copyOf(args, args.length);
+            Map<String, Object> cache = new HashMap<>();
+
+            cache.put(RunnableExtend.PARAMETER_RUN_ID, runId);
             if(parameterIsExist) {
                 int index = dataSupportCore.getDataParameterIndex(actuator.getMethod());
                 if(index <0 ){ throw new RuntimeException("find parameter index error.");}
-                args[index] = dataArray.get(i);
-                cache.put(RunnableExtend.PARAMETER_DATA, args);
+                argsActuator[index] = dataArray.get(i);
+                /*actuator.createExt(argsActuator) argsActuator*/
+                cache.put(RunnableExtend.PARAMETER_PROCEEDING_METHOD, actuator);
+                cache.put(RunnableExtend.PARAMETER_DATA, argsActuator);
+            }else {
+                cache.put(RunnableExtend.PARAMETER_PROCEEDING_METHOD, actuator);
             }
             localRunnableBinding.bind(new RunnableExtendWork(), cache);
         }

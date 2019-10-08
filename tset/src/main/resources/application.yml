@@ -2,7 +2,7 @@ logging:
   level: debug
   level.com.task.core: debug
 server:
-  port: 8003
+  port: 8004
   tomcat:
     uri-encoding: UTF-8
 

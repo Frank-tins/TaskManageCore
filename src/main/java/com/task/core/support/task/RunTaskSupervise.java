@@ -4,8 +4,8 @@ package com.task.core.support.task;
 import com.task.core.bean.RunTaskInfo;
 import com.task.core.bean.TaskRunLogger;
 import com.task.core.util.Audit;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 
@@ -26,7 +26,7 @@ public final class RunTaskSupervise {
     private static final String STRING_DISABLE = "disable";
     private static final int MAX_THREAD_NUMBER = 1000;
 
-    private static Logger logger = LogManager.getLogger(RunTaskSupervise.class);
+    private static Logger logger = LoggerFactory.getLogger(RunTaskSupervise.class);
 
     /**
      * 任务启用

@@ -10,8 +10,8 @@ import com.task.core.support.task.TaskManageCoreSupervise;
 import com.task.core.util.Audit;
 import com.task.core.util.ClassScanner;
 import com.task.core.util.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationAttributes;
 
 import java.lang.reflect.Method;
@@ -23,7 +23,7 @@ import java.util.*;
  */
 public class RegisterLoading  {
 
-    private Logger logger  = LogManager.getLogger(RegisterLoading.class);
+    private Logger logger  = LoggerFactory.getLogger(RegisterLoading.class);
 
     private final String DEFAULT_PARAMETER = "[null]";
 

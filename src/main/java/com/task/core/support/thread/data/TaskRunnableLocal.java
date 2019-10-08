@@ -3,8 +3,8 @@ package com.task.core.support.thread.data;
 import com.task.core.bean.RunTaskInfo;
 import com.task.core.support.thread.base.RunnableExtend;
 import com.task.core.util.Audit;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class TaskRunnableLocal {
 
-    private Logger logger = LogManager.getLogger(TaskRunnableLocal.class);
+    private Logger logger = LoggerFactory.getLogger(TaskRunnableLocal.class);
 
     //当前线程任务 所持缓存池
     private final Map<RunnableExtend, RunnableCache> runnableCacheMap;

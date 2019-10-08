@@ -1,9 +1,10 @@
-package com.run;
+package com.task.tset.run;
 
 import com.task.core.annotation.start.EnableTaskCore;
 import com.task.core.annotation.start.TaskPackage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.task.core.annotation.start.TaskThreadPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,14 +14,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Frank
  */
 @SpringBootApplication(
-        scanBasePackages = {"com.run"}
+        scanBasePackages = {"com.task.tset.run"}
 )
 @EnableTaskCore(
-        baseTaskPackage = @TaskPackage(packageName = "com.run.controller")
+        baseTaskPackage = @TaskPackage(packageName = "com.task.tset.run"),
+        poolAnnotation = @TaskThreadPool(corePoolSize = 300)
 )
 public class Application {
 
-    private Logger logger = LogManager.getLogger(Application.class);
+    private Logger logger = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class,args);

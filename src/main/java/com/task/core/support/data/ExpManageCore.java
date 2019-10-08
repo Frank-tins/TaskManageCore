@@ -3,9 +3,10 @@ package com.task.core.support.data;
 import com.task.core.annotation.TaskData;
 import com.task.core.excption.DataExpException;
 import com.task.core.util.ArrayUtils;
+import com.task.core.util.ClassScanner;
 import com.task.core.util.SpringUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -19,12 +20,12 @@ import java.util.List;
  */
 public class ExpManageCore {
 
-    private Logger logger = LogManager.getLogger(ExpManageCore.class);
+    private Logger logger = LoggerFactory.getLogger(ExpManageCore.class);
 
     public List analysisExp(String exp, Method baseMethod, Object[] parameterValues) throws DataExpException {
         //TODO 正则
         String expType = exp.substring(0,exp.indexOf("[")).toUpperCase();
-        String expClass = exp.substring(exp.indexOf("[" + 1, exp.indexOf("(")));
+        String expClass = exp.substring(exp.indexOf("[") + 1, exp.indexOf("("));
         String expMethod = exp.substring(exp.indexOf("(") + 1, exp.indexOf(")"));
         List<Object> rel ;
 
@@ -56,12 +57,8 @@ public class ExpManageCore {
             throw new DataExpException("Exp incorrect");
         }
 
-        Method method;
-        try {
-            method = type.getDeclaredMethod(expMethod);
-        } catch (NoSuchMethodException e) {
-            throw new DataExpException(e.getMessage());
-        }
+        Method method = ClassScanner.findMethodByName(type, expMethod);
+
         Object expRel;
         try {
             expRel = method.invoke(obj, parameterValues);

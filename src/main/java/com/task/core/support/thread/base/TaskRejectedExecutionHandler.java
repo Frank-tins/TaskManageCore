@@ -1,7 +1,7 @@
 package com.task.core.support.thread.base;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 public class TaskRejectedExecutionHandler implements RejectedExecutionHandler {
 
-    private Logger logger = LogManager.getLogger(TaskRejectedExecutionHandler.class);
+    private Logger logger = LoggerFactory.getLogger(TaskRejectedExecutionHandler.class);
 
     @Override
     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {

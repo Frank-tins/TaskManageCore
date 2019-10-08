@@ -42,7 +42,8 @@ public class RunnableExtendWork extends AbstractRunnableExtend implements Runnab
     public Object execute() throws Throwable {
         RunnableCache runnableCache = super.getRunnableCache();
         Actuator actuator = (Actuator) runnableCache.getCache(RunnableExtend.PARAMETER_PROCEEDING_METHOD);
-        Object[] parameters = (Object[]) runnableCache.getCache(RunnableExtend.PARAMETER_DATA);
+        Object para = runnableCache.getCache(RunnableExtend.PARAMETER_DATA);
+        Object[] parameters = para == null ?  null : (Object[]) para;
         Object rel = null;
         if(parameters != null) {
             rel = actuator.invoke(parameters);

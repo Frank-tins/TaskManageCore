@@ -6,8 +6,8 @@ import com.task.core.support.task.group.ExcSupervise;
 import com.task.core.support.task.group.TaskSuperviseAnalytical;
 import com.task.core.support.thread.ThreadManageCore;
 import com.task.core.support.web.StartController;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,7 +21,7 @@ import com.task.core.start.StartStatus;
 @ComponentScan(basePackages = "com.task.core.*")
 public class TaskBeanLoading {
 
-    private Logger logger = LogManager.getLogger(TaskBeanLoading.class);
+    private Logger logger = LoggerFactory.getLogger(TaskBeanLoading.class);
 
     @Bean
     public ProjectRunLogger projectRunLogger(){

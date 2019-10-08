@@ -8,8 +8,8 @@ import com.task.core.start.component.LogoLoading;
 import com.task.core.start.component.RegisterLoading;
 import com.task.core.start.component.TaskBeanLoading;
 import com.task.core.support.thread.ThreadManageCore;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -31,7 +31,7 @@ import java.util.Map;
  */
 public class TaskCoreStart implements ImportSelector, BeanFactoryAware {
 
-    private Logger logger = LogManager.getLogger(TaskCoreStart.class);
+    private Logger logger = LoggerFactory.getLogger(TaskCoreStart.class);
 
     private Class<? extends Annotation> enableAnnotationType = EnableTaskCore.class;
 
@@ -65,6 +65,7 @@ public class TaskCoreStart implements ImportSelector, BeanFactoryAware {
         Map<String, Object> enableTaskCore = annotationMetadata.getAnnotationAttributes(enableAnnotationType.getName());
         outLog();
         taskRegister(enableTaskCore);
+        threadInit(enableTaskCore);
     }
 
     private void taskRegister(Map<String, Object> enableTaskCore) throws Exception{
