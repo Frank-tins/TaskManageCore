@@ -4,20 +4,20 @@
   "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
     <!--数据库驱动-->
-    <classPathEntry    location="ojdbc6-11.2.0.3.jar"/>
+    <classPathEntry    location="mysql-connector-java-5.1.38.jar"/>
     <context id="DB2Tables"    targetRuntime="MyBatis3">
         <commentGenerator>
             <property name="suppressDate" value="true"/>
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
         <!--数据库链接地址账号密码-->
-        <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" connectionURL="jdbc:oracle:thin:@192.168.16.35:1521:zhuting" userId="zhuting" password="zhuting123">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://193.22.152.42:3306/TMC" userId="root" password="Frank123">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <!--生成Model类存放位置-->
-        <javaModelGenerator targetPackage="com.zt.thread.entity" targetProject="../../java">
+        <javaModelGenerator targetPackage="com.task.tset.run.entity" targetProject="../../java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
@@ -26,11 +26,11 @@
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!--生成Dao类存放位置-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.zt.thread.dao" targetProject="../../java">
-            <property name="enableSubPackages" value="true"/>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.task.tset.run.dao" targetProject="../../java">
+            <property name="enableSubPackages" value="true1"/>
         </javaClientGenerator>
         <!--生成对应表及类名-->
-        <table tableName="R_PRO_DEVELOPMENT" domainObjectName="ProDevelopment" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+        <table tableName="tmc_mapper_test" domainObjectName="TmcMapperTest" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
     </context>
 </generatorConfiguration>
 

@@ -8,6 +8,7 @@ import com.task.core.util.SpringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.List;
@@ -62,6 +63,9 @@ public class ExpManageCore {
         Object expRel;
         try {
             expRel = method.invoke(obj, parameterValues);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+            throw new DataExpException(e.getMessage());
         } catch (Exception e){
             throw new DataExpException(e.getMessage());
         }

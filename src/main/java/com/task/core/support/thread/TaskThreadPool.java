@@ -60,7 +60,7 @@ class TaskThreadPool {
     private ThreadPoolConfig defaultParameter(ThreadPoolConfig threadPoolConfig){
         ThreadPoolConfig config = new ThreadPoolConfig();
         config.setQueueCapacity(-1);
-        config.setCorePoolSize(100);
+        config.setCorePoolSize(50);
         config.setPriority(5);
         config.setMaxPool(Integer.MAX_VALUE);
         config.setThreadNamePrefix("task-manage-core");

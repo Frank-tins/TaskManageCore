@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 
-@RequestMapping(value = "/qq")
+@RequestMapping(value = "/tmc")
 public class TestController {
 
     private Logger logger = LoggerFactory.getLogger(TestController.class);
@@ -32,8 +32,14 @@ public class TestController {
 
 
     @RequestMapping("/betm-test")
-    public String betm(){
+    public String methodDataTestFunction(){
         return methodDataTest.methodDataTestFunction( "Supper Man", null);
+    }
+
+
+    @RequestMapping("/bemf-test")
+    public String mapperDataTestFunction(){
+        return methodDataTest.mapperDataTestFunction(  null, "betbsensr", "1", 2);
     }
 
 

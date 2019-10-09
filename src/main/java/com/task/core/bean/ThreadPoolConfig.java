@@ -29,17 +29,17 @@ public class ThreadPoolConfig {
     public ThreadPoolConfig(){}
 
     public ThreadPoolConfig(AnnotationAttributes annotationAttributesArray) {
-        this.maxPool = annotationAttributesArray.getNumber("").intValue();
+        this.maxPool = annotationAttributesArray.getNumber("maxPool").intValue();
 
-        this.priority = annotationAttributesArray.getNumber("").intValue();
+        this.priority = annotationAttributesArray.getNumber("priority").intValue();
 
-        this.corePoolSize = annotationAttributesArray.getNumber("").intValue();
+        this.corePoolSize = annotationAttributesArray.getNumber("corePoolSize").intValue();
 
-        this.queueCapacity = annotationAttributesArray.getNumber("").intValue();
+        this.queueCapacity = annotationAttributesArray.getNumber("queueCapacity").intValue();
 
-        this.keepAliveTimeSecond = annotationAttributesArray.getNumber("").intValue();
+        this.keepAliveTimeSecond = annotationAttributesArray.getNumber("keepAliveTimeSecond").intValue();
 
-        this.threadNamePrefix = annotationAttributesArray.getString("");
+        this.threadNamePrefix = annotationAttributesArray.getString("threadNamePrefix");
 
     }
 

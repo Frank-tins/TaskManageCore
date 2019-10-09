@@ -23,7 +23,7 @@ public class StringUtils extends org.springframework.util.StringUtils {
     public static String format (String str, Object... args){
         String rel = str;
         for (int i = 0; i < args.length; i++) {
-            rel.replace("%" + i , toString(args[i]));
+            rel = rel.replace("%" + i , toString(args[i]));
         }
         return rel;
     }

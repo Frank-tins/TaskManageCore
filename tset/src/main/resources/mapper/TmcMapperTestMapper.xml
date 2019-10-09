@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.task.tset.run.dao.TmcMapperTestMapper">
+
+  <select id="selectAll" resultType="com.task.tset.run.entity.TmcMapperTest">
+    select *
+    from tmc_mapper_test
+  </select>
+
+  <select id="selectByName" resultType="com.task.tset.run.entity.TmcMapperTest">
+    select *
+    from tmc_mapper_test
+    where name like '%${name}%'
+  </select>
+
+  <select id="selectByParameter" resultType="com.task.tset.run.entity.TmcMapperTest">
+    select *
+    from tmc_mapper_test
+    where name like '%${name}%' AND
+    2 = 1
+  </select>
+
+</mapper>

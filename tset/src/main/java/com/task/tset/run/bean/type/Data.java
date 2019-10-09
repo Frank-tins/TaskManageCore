@@ -9,8 +9,6 @@ import java.util.List;
 @Component
 public class Data {
 
-
-
     public List<EntityTest> list = new ArrayList<EntityTest>();
 
     {
